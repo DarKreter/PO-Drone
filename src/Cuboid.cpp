@@ -14,7 +14,13 @@
  * wczytane wszystkie wierzchołki
  */
 Cuboid::Cuboid(std::string name): Figure(name)
-{}
+{
+    std::ifstream str(name);
+    str >> (*this);
+    str.close();
+}
+
+
 
 /**
  * Możemy za jego pomocą dostać się do poszczególnych wierzchołków prostopadłościanu.
@@ -73,73 +79,11 @@ void Cuboid::Translation(Vector3D wektor)
         vertices[i] = vertices[i] + wektor;
 }
 
-/**
- * Funckja sprawdza to na podstawie porównywania długości odpowiednich boków.
- * W przypadku braku zgodności długości odpowiednich boków - zostanie wypisany komunikat o niezgodności.
- * Gdyby długości były zgodne - zostanie wypisany komunikat o zgodności
- * Funkcja także wypisze długości wszystkich boków.
- *
- */
-void Cuboid::IsCuboid()
+void Cuboid::Draw()
 {
-    //TODO: może warto by sprawdzać kąty kto wie jakby Ci się kiedyś chciało to zrób
-	double epsilon = 0.00000000001;
-	double  bok1[4], bok2[4], bok3[4];
-
-	for(int i=0;i<4;++i)
-	    bok1[i] = (vertices[2 * i] - vertices[2 * i + 1]).Length();
-
-    for(int i=0;i<2;++i)
-        bok2[i] = (vertices[i] - vertices[i + 2]).Length();
-
-    for(int i=2;i<4;++i)
-        bok2[i] = (vertices[i + 2] - vertices[i + 4]).Length();
-
-    for(int i=0;i<2;++i)
-        bok3[i] = (vertices[i] - vertices[i + 6]).Length();
-
-    for(int i=2;i<4;++i)
-        bok3[i] = (vertices[i] - vertices[i + 2]).Length();
-
-
-    for(int i=0;i<3;++i)
-        if( std::abs(bok1[i] - bok1[3]) > epsilon )
-        {
-            std::cout << "Pierwsze cztery boki nie sa sobie rowne!!!" << std::endl;
-            goto jeden;
-        }
-    std::cout << "Pierwsze cztery boki sa identyczne." << std::endl;
-    jeden:
-    for(int i=0;i<4;++i)
-	    std::cout << "\tDlugosc " << i << " boku: "      << std::fixed << std::setprecision(10) << bok1[i] << std::endl;
-    std::cout << std::endl;
-
-
-    for(int i=0;i<3;++i)
-        if( std::abs(bok2[i] - bok2[3]) > epsilon )
-        {
-            std::cout << "Srodkowe cztery boki nie sa sobie rowne!!!" << std::endl;
-            goto dwa;
-        }
-    std::cout << "Srodkowe cztery boki sa identyczne." << std::endl;
-    dwa:
-    for(int i=0;i<4;++i)
-        std::cout << "\tDlugosc " << i << " boku: "      << std::fixed << std::setprecision(10) << bok2[i] << std::endl;
-    std::cout << std::endl;
-
-
-    for(int i=0;i<3;++i)
-        if( std::abs(bok3[i] - bok3[3]) > epsilon )
-        {
-            std::cout << "Ostatnie cztery boki nie sa sobie rowne!!!" << std::endl;
-            goto trzy;
-        }
-    std::cout << "Ostatnie cztery boki sa identyczne." << std::endl;
-    trzy:
-    for(int i=0;i<4;++i)
-        std::cout << "\tDlugosc " << i << " boku: "      << std::fixed << std::setprecision(10) << bok3[i] << std::endl;
-    std::cout << std::endl;
-
+    std::ofstream str(fileName);
+    str << (*this) << std::endl << vertices[0] << std::endl << vertices[1];
+    str.close();
 }
 
 /**

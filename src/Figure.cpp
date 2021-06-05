@@ -6,8 +6,4 @@
 #include "Figure.hpp"
 
 Figure::Figure(std::string fn): fileName{std::move(fn)}
-{
-    std::ifstream file(fileName);
-    file >> (*this);
-    file.close();
-}
+{}

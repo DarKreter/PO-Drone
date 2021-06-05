@@ -11,13 +11,15 @@
 
 class Figure
 {
+protected:
     std::string fileName;
-public:
+    
     explicit Figure(std::string);
     
+public:
     virtual void Draw() = 0;
-    
-    std::string FileName() {return fileName;}
+
+    std::string FileName(std::string sf) {return fileName = sf;}
 };
 
 std::istream& operator >> (std::istream& strm, Figure& pr);

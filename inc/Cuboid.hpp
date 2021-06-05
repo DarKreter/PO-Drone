@@ -35,7 +35,7 @@ public:
     /**
      * \brief Inicjalizuje wierzchołki prostopadłościanu, na podstawie danych z pliku.
      */
-    Cuboid(std::string name);
+    explicit Cuboid(std::string name);
     
 
     /**
@@ -56,10 +56,9 @@ public:
      * \brief  Translacja bryły.
      */
 	void Translation(Vector3D wektor);
-    /**
-     * \brief  Sprawdzanie czy bryła dalej jest poprawnym prostopadłościanem.
-     */
-	void IsCuboid();
+	
+	void Draw() override;
+
 };
 
 /**

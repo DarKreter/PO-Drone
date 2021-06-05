@@ -30,6 +30,8 @@ class Scene
     std::vector<std::shared_ptr<Figure>> objects;
 
     bool AddNewFile(std::string fileName, PzG::RodzajRysowania drawType = PzG::RR_Ciagly, int width = 2);
+    
+    static std::uint16_t count;
 public:
     
     /*
@@ -76,7 +78,7 @@ public:
      *
      * Usuwa plik "temp.dat" który służy do komunikacji miedzy programem, a gnuplotem.
      */
-    ~Scene();
+    ~Scene() override;
     
 };
 

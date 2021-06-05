@@ -7,6 +7,8 @@
  */
 
 
+std::uint16_t Scene::count = 0;
+
 /**
  * Na podstawie 3 wartości przesłanych w Wektorze3D,
  * ustawiany jest zakres wartości wyświetlany na osiach w programie gnuplot.
@@ -25,7 +27,6 @@ Scene::Scene()
 
 bool Scene::AddNewFile(std::string fileName, PzG::RodzajRysowania drawType, int width)
 {
-    fileName = "temp/" + fileName;
     system(("touch " + fileName).c_str());
     return DodajNazwePliku(fileName.c_str(), drawType, width);
 }
@@ -59,7 +60,7 @@ void Scene::Draw()
  */
 void Scene::AddObject(std::shared_ptr<Figure> object)
 {
-    AddNewFile(object->FileName());
+    AddNewFile(object->FileName("temp/object" + std::to_string(++count)));
     objects.push_back(object);
 }
 
