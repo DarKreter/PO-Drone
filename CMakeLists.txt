@@ -30,8 +30,11 @@ target_link_libraries(Scene Cuboid Gnuplot)
 target_include_directories(Scene PUBLIC ./inc ./src)
 
 set(LIBS Gnuplot Vector Matrix MatrixRot Cuboid Figure Scene)
+set(GCC_Compile_Flags -lpthread -Wall -Wextra -pedantic -O3)
+
+set(CMAKE_CXX_FLAGS -pthread)
 
 add_executable(Drone ./src/_main.cpp)
 target_link_libraries(Drone ${LIBS})
 
-target_compile_options(Drone PUBLIC -Wall -Wextra -pedantic -O3)
+target_compile_options(Drone PUBLIC ${GCC_Compile_Flags})

@@ -23,6 +23,8 @@ Scene::Scene()
     system("mkdir -p temp");
     
     ZmienTrybRys(PzG::TR_3D);
+    
+    
 }
 
 bool Scene::AddNewFile(std::string fileName, PzG::RodzajRysowania drawType, int width)

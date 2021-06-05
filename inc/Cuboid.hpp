@@ -55,7 +55,7 @@ public:
     /**
      * \brief  Translacja bryły.
      */
-	void Translation(Vector3D wektor);
+	void Translation(Vector3D wektor) override;
 	
 	void Draw() override;
 

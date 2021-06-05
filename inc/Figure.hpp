@@ -8,6 +8,7 @@
 
 #include <string>
 #include <utility>
+#include <Vector.hpp>
 
 class Figure
 {
@@ -18,6 +19,7 @@ protected:
     
 public:
     virtual void Draw() = 0;
+    virtual void Translation(Vector3D) = 0;
 
     std::string FileName(std::string sf) {return fileName = sf;}
 };
