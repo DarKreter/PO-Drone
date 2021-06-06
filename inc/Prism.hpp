@@ -20,7 +20,7 @@ public:
     /**
      * \brief Inicjalizuje wierzchołki prostopadłościanu, na podstawie danych z pliku.
      */
-    explicit Prism(const Vector3D& localCenter, double r, double h, const MatrixRot3x3& matRot = MatrixRot3x3());
+    explicit Prism(Scene *scene, const Vector3D &localCenter, double r, double h, const MatrixRot3x3 &matRot);
     
     std::vector<Vector3D>& CalcLocalCoords(std::vector<Vector3D>&) override;
 };

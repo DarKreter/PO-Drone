@@ -14,8 +14,8 @@
  * @param name - nazwa pliku który zostanie otworzony i zostaną z niego
  * wczytane wszystkie wierzchołki
  */
-Cuboid::Cuboid(const Vector3D& localCenter, double w, double l, double h, const MatrixRot3x3& matRot)
-    : Figure("SomethingWentWrong.jpg", 2, matRot, localCenter), width{w}, length{l}, height{h}
+Cuboid::Cuboid(Scene *scene, const Vector3D &localCenter, double w, double l, double h, const MatrixRot3x3 &matRot, Vector3D* rotCen)
+    : Figure(scene, "SomethingWentWrong.jpg", 2, matRot, localCenter, rotCen), width{w}, length{l}, height{h}
 {}
 
 

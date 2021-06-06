@@ -12,21 +12,26 @@
 #include <MatrixRot.hpp>
 #include <vector>
 #include <functional>
+#include <memory>
+
 class Scene;
 
 class Figure
 {
-protected:
+public:
     std::string fileName;
     uint8_t fileNewLine;
     
-    MatrixRot3x3 orientation;
+    MatrixRot3x3 localOrientation, globalOrientation;
     Vector3D localCoordCenter;
+    const Vector3D* rotationCenter;
     
     Scene* whereIAm;
     
+    static std::uint16_t count;
     
-    explicit Figure(std::string fn, uint8_t fnl, const MatrixRot3x3 &matRot, const Vector3D &localCenter);
+    explicit Figure(Scene* scene, std::string fn, uint8_t fnl, const MatrixRot3x3 &matRot,
+                    Vector3D localCenter, Vector3D* rotationCentr = nullptr);
     
     template<typename T>
     void Animate(std::function<void(double)>function, T arg, double speed, double frequency);
@@ -36,21 +41,27 @@ protected:
     
     //Przeliczyć je na układ globalny (mnożenie przez macierz plus translacja o środek)
     void CalcGlobalCoords(std::vector<Vector3D>& vertices);
-    
+    bool nested = false;
     
 public:
     
     virtual void Draw();
     
-    void Translation(Vector3D wektor, double speed);
-    void TranslationRaw(const Vector3D& wektor);
+    virtual void Translation(Vector3D wektor, double speed);
+    virtual void TranslationRaw(const Vector3D& wektor);
     
-    void Rotation(double angle, MatrixRot3x3::Axis axis,  double speed);
-    void RotationRaw(const MatrixRot3x3& macRot);
+    virtual void RotationGlobal(double angle, MatrixRot3x3::Axis axis,  double speed);
+    virtual void RotationLocal(double angle, MatrixRot3x3::Axis axis,  double speed);
+    virtual void RotationRawLocal(const MatrixRot3x3& macRot);
+    virtual void RotationRawGlobal(const MatrixRot3x3& macRot);
     
 
     std::string FileName(std::string sf) {return fileName = sf;}
     void SetScene(Scene*s) {whereIAm = s;}
+    void Nested() { nested = true; }
+    void RotationCenter(Vector3D* w) {rotationCenter = w;}
+    void ClearRotationCenter() {rotationCenter = &localCoordCenter;}
+
 };
 
 #include<Figure.tpp>

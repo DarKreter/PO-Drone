@@ -6,8 +6,8 @@
 #include <fstream>
 
 
-BrokenLine::BrokenLine(std::vector<Vector3D> p)
-        : Figure("SomethingWentWrong.jpg", 0, MatrixRot3x3(), Vector3D()), points{p}
+BrokenLine::BrokenLine(Scene *scene, std::vector<Vector3D> p)
+        : Figure(scene, "SomethingWentWrong.jpg", 0, MatrixRot3x3(), Vector3D()), points{p}
 {}
 
 void BrokenLine::Draw()

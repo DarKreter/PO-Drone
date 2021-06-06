@@ -18,8 +18,9 @@
  *
  * @param range - wektor którego odpowiednie składowe odpowiadają za zakres wartości na osiach.
  */
-Scene::Scene(float fr) : count{0}, frequency{fr}
+Scene::Scene(float fr) : frequency{fr}
 {
+    this->~Scene();
     system("mkdir -p temp");
     
     ZmienTrybRys(PzG::TR_3D);
@@ -38,6 +39,9 @@ void Scene::Draw()
     for(auto& fig: objects)
         fig->Draw();
     
+    for(auto& drone: drones)
+        drone->Draw();
+    
 
     Rysuj();
 }
@@ -50,9 +54,14 @@ void Scene::Draw()
  */
 void Scene::AddObject(const std::shared_ptr<Figure>& object)
 {
-    object->SetScene(this);
-    AddNewFile(object->FileName("temp/object" + std::to_string(++count)));
     objects.push_back(object);
+    
+    Draw();
+}
+
+void Scene::AddDrone(const std::shared_ptr<Drone>& drone)
+{
+    drones.push_back(drone);
     
     Draw();
 }

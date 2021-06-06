@@ -104,7 +104,7 @@ Vector<SIZE> Vector<SIZE>::operator*(double st) const
  * @return Zwraca długość wektora
  */
 template<size_t SIZE>
-double Vector<SIZE>::Length()
+double Vector<SIZE>::Length() const
 {
 	double sum = 0;
 	for (uint16_t i = 0; i < SIZE; ++i)

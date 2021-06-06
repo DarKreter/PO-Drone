@@ -6,8 +6,8 @@
 #include <fstream>
 
 
-Surface::Surface(double r)
-        : Figure("SomethingWentWrong.jpg", 0, MatrixRot3x3(), Vector3D()), range{r}, level{-r}
+Surface::Surface(Scene *scene, double r)
+        : Figure(scene, "SomethingWentWrong.jpg", 0, MatrixRot3x3(), Vector3D()), range{r}, level{-r}
 {}
 
 void Surface::Draw()

@@ -16,7 +16,7 @@ class Surface: public Figure
 
 public:
 
-    explicit Surface(double r);
+    explicit Surface(Scene *scene, double r);
     
     std::vector<Vector3D>& CalcLocalCoords(std::vector<Vector3D>& a) override {return a;}
     

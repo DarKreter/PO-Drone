@@ -2,18 +2,28 @@
 // Created by darkr on 05.06.2021.
 //
 #include <fstream>
+#include <utility>
 #include "Figure.hpp"
 #include "Scene.hpp"
 
-Figure::Figure(std::string fn, uint8_t fnl, const MatrixRot3x3 &matRot, const Vector3D &localCenter)
+std::uint16_t Figure::count = 0;
+
+Figure::Figure(Scene* scene, std::string fn, uint8_t fnl, const MatrixRot3x3 &matRot,
+               Vector3D localCenter, Vector3D* rotationCentr)
         : fileName{std::move(fn)}, fileNewLine{fnl},
-            orientation(matRot), localCoordCenter(localCenter), whereIAm{nullptr}
-{}
+            localOrientation(matRot), globalOrientation(MatrixRot3x3()), localCoordCenter(std::move(localCenter)), whereIAm{scene}
+{
+    scene->AddNewFile(FileName("temp/object" + std::to_string(++Figure::count)));
+    if(rotationCentr)
+        rotationCenter = rotationCentr;
+    else
+        rotationCenter = &localCoordCenter;
+}
 
 void Figure::CalcGlobalCoords(std::vector<Vector3D>& vertices)
 {
     for(auto& vertex: vertices)
-        vertex = orientation * vertex + localCoordCenter;
+        vertex = globalOrientation * (localOrientation * vertex + (localCoordCenter - *rotationCenter)) + localCoordCenter + (*rotationCenter - localCoordCenter);
     
 }
 
@@ -23,7 +33,7 @@ void Figure::Draw()
     vertices.reserve(32);
     
     CalcGlobalCoords(CalcLocalCoords(vertices));
-
+    
     
     std::ofstream str(fileName);
     int i =0;
@@ -38,14 +48,24 @@ void Figure::Draw()
 void Figure::TranslationRaw(const Vector3D &wektor)
 {
     localCoordCenter = localCoordCenter + wektor;
-    
-    whereIAm->Draw();
+    if(!nested)
+        whereIAm->Draw();
 }
 
-void Figure::RotationRaw(const MatrixRot3x3& macRot)
+void Figure::RotationRawLocal(const MatrixRot3x3& macRot)
 {
-    orientation = macRot * orientation;
-    whereIAm->Draw();
+    localOrientation = macRot * localOrientation;
+    
+    if(!nested)
+        whereIAm->Draw();
+}
+
+void Figure::RotationRawGlobal(const MatrixRot3x3& macRot)
+{
+    globalOrientation = macRot * globalOrientation;
+        
+    if(!nested)
+        whereIAm->Draw();
 }
 
 void Figure::Translation(Vector3D wektor, double speed)
@@ -58,12 +78,23 @@ void Figure::Translation(Vector3D wektor, double speed)
             wektor, speed, whereIAm->Frequency());
 }
 
-void Figure::Rotation(double angle, MatrixRot3x3::Axis axis,  double speed)
+void Figure::RotationLocal(double angle, MatrixRot3x3::Axis axis,  double speed)
 {
     Animate(
             [this, angle, axis](double divider)
             {
-                this->RotationRaw(MatrixRot3x3(angle * divider, axis));
+                this->RotationRawLocal(MatrixRot3x3(angle * divider, axis));
+            },
+            angle, speed, whereIAm->Frequency());
+}
+
+
+void Figure::RotationGlobal(double angle, MatrixRot3x3::Axis axis,  double speed)
+{
+    Animate(
+            [this, angle, axis](double divider)
+            {
+                this->RotationRawGlobal(MatrixRot3x3(angle * divider, axis));
             },
             angle, speed, whereIAm->Frequency());
 }

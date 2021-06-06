@@ -33,16 +33,20 @@ add_library(BrokenLine src/BrokenLine.cpp inc/BrokenLine.hpp)
 target_link_libraries(BrokenLine Figure)
 target_include_directories(BrokenLine PUBLIC ./inc ./src)
 
+add_library(Drone src/Drone.cpp inc/Drone.hpp)
+target_link_libraries(Drone Figure Cuboid Prism)
+target_include_directories(Drone PUBLIC ./inc ./src)
+
 add_library(Scene src/Scene.cpp inc/Scene.hpp)
 target_link_libraries(Scene Cuboid Gnuplot)
 target_include_directories(Scene PUBLIC ./inc ./src)
 
-set(LIBS Gnuplot Vector Matrix Cuboid Figure Scene Prism Surface BrokenLine)
+set(LIBS Gnuplot Vector Matrix Cuboid Figure Scene Prism Surface BrokenLine Drone)
 set(GCC_Compile_Flags -lpthread -Wall -Wextra -pedantic -O3)
 
 set(CMAKE_CXX_FLAGS -pthread)
 
-add_executable(Drone ./src/_main.cpp)
-target_link_libraries(Drone ${LIBS})
+add_executable(Executable ./src/_main.cpp)
+target_link_libraries(Executable ${LIBS})
 
-target_compile_options(Drone PUBLIC ${GCC_Compile_Flags})
+target_compile_options(Executable PUBLIC ${GCC_Compile_Flags})

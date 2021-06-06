@@ -16,7 +16,7 @@ class BrokenLine: public Figure
 
 public:
     
-    explicit BrokenLine(std::vector<Vector3D> p);
+    explicit BrokenLine(Scene *scene, std::vector<Vector3D> p);
     
     std::vector<Vector3D>& CalcLocalCoords(std::vector<Vector3D>& a) override {return a;}
     

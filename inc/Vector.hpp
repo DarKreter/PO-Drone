@@ -94,7 +94,7 @@ public:
     /**
      * @brief Liczy długość wektora
      */
-	double Length();
+	double Length() const;
 	
 	operator double()
 	{

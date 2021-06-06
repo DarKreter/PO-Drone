@@ -6,6 +6,7 @@
 #include <vector>
 #include <memory>
 #include "Vector.hpp"
+#include "Drone.hpp"
 
 /*!
  * @file
@@ -28,14 +29,16 @@ class Scene
      * Może ich od 1 do bardzo dużej ilości ograniczoną pamięcią urządzenia.
      */
     std::vector<std::shared_ptr<Figure>> objects;
-    double range;
-
-    bool AddNewFile(std::string fileName, PzG::RodzajRysowania drawType = PzG::RR_Ciagly, int width = 2);
+    std::vector<std::shared_ptr<Drone>> drones;
     
-    std::uint16_t count;
+    double range;
+    
     const float frequency;
     
 public:
+    bool AddNewFile(std::string fileName, PzG::RodzajRysowania drawType = PzG::RR_Ciagly, int width = 2);
+    
+    
     double Frequency() const { return frequency; }
     
     /*
@@ -55,6 +58,11 @@ public:
      * @brief Dodanie nowej figury
      */
     void AddObject(const std::shared_ptr<Figure>& object);
+    
+    /**
+     * @brief Dodanie nowego drona
+     */
+    void AddDrone(const std::shared_ptr<Drone>& drone);
 
     /**
      * @brief Zwracanie ilości figur w przestrzeni

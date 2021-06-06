@@ -35,7 +35,8 @@ public:
     /**
      * \brief Inicjalizuje wierzchołki prostopadłościanu, na podstawie danych z pliku.
      */
-    explicit Cuboid(const Vector3D& localCenter, double w, double l, double h, const MatrixRot3x3& matRot = MatrixRot3x3());
+    explicit Cuboid(Scene *scene, const Vector3D &localCenter, double w, double l, double h,
+                    const MatrixRot3x3 &matRot, Vector3D* rotCen = nullptr);
     
     std::vector<Vector3D>& CalcLocalCoords(std::vector<Vector3D>&) override;
     
