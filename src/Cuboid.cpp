@@ -15,7 +15,7 @@
  * wczytane wszystkie wierzchołki
  */
 Cuboid::Cuboid(const Vector3D& localCenter, double w, double l, double h, const MatrixRot3x3& matRot)
-    :Figure("SomethingWentWrong.jpg", matRot, localCenter), width{w}, length{l}, height{h}
+    : Figure("SomethingWentWrong.jpg", 2, matRot, localCenter), width{w}, length{l}, height{h}
 {}
 
 

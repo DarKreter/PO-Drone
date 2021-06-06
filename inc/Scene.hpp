@@ -28,23 +28,23 @@ class Scene
      * Może ich od 1 do bardzo dużej ilości ograniczoną pamięcią urządzenia.
      */
     std::vector<std::shared_ptr<Figure>> objects;
+    double range;
 
     bool AddNewFile(std::string fileName, PzG::RodzajRysowania drawType = PzG::RR_Ciagly, int width = 2);
     
     std::uint16_t count;
-    volatile bool drawFlag;
     const float frequency;
     
 public:
-    void EnableDrawing();
-    void DisableDrawing() {drawFlag = false;}
+    double Frequency() const { return frequency; }
     
     /*
      * @brief Inicjalizuje scene za pomocą zakresu wartości na osiach.
      */
     Scene(float fr = 60);
     
-    void SetRange(Vector3D range);
+    void SetRange(double rangee);
+    double GetRange() {return range;}
     
     /**
      * @brief Odświeżenie obszaru roboczego programu gnuplot
@@ -55,11 +55,6 @@ public:
      * @brief Dodanie nowej figury
      */
     void AddObject(const std::shared_ptr<Figure>& object);
-
-    /**
-     * @brief Usunięcie bryły z przestrzeni na podstawie jej numeru
-     */
-//    void RemoveObject(uint16_t);
 
     /**
      * @brief Zwracanie ilości figur w przestrzeni
@@ -86,8 +81,5 @@ public:
     ~Scene() override;
     
 };
-
-
-void *DrawThread([[maybe_unused]] void *arg);
 
 #endif //SCENE_HPP

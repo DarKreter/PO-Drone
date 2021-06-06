@@ -11,24 +11,17 @@
  * T zapewnia dzielenie przez double oraz ma funkcje składową .Lenght()
  */
 template<typename T>
-void Figure::Animate(std::function<void(double)> function, T arg, double speed)
+void Figure::Animate(std::function<void(double)> function, T arg, double speed, double frequency)
 {
-    constexpr uint16_t delay = 20;//[ms]
+    const uint16_t delay = 1000./frequency;//[ms]
     const double time = arg / (speed / 1000); //[ms]
     const double hmt = time / delay;//[ms]
-//    auto copy = *this;
-//    copy->TranslationRaw(wektor);
 
     for(uint32_t timeElapsed = 0; timeElapsed<=time; timeElapsed += delay)
     {
-        readyToDraw = false;
         function(1 / hmt);
-        readyToDraw = true;
         usleep(delay*1'000);
     }
-
-    
-//    *this = *copy;
 }
 
 #endif

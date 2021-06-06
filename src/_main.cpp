@@ -2,31 +2,31 @@
 #include <pthread.h>
 #include <Scene.hpp>
 #include <Cuboid.hpp>
+#include <Prism.hpp>
+#include <Surface.hpp>
 
 using namespace std;
 
 
 int main ()
 {
-    Scene lol;
+    Scene lol(30);
     
-    lol.SetRange(Vector3D({100,100,100}));
-    
-    
-    lol.AddObject(std::make_shared<Cuboid>(Vector3D({20,0,-30}), 50, 80, 20));
+    lol.SetRange(50);
+    lol.AddObject(std::make_shared<Surface>(lol.GetRange()));
+//    lol.AddObject(std::make_shared<Prism>(Vector3D({0,0,0}), 20, 50));
+//    lol.AddObject(std::make_shared<Cuboid>(Vector3D({50,50,-20}), 20, 30,15));
     
     cout << "Vectorów3D teraz: "    << Vector3D::HowManyVectorsNow() << endl;
     cout << "Vectorów3D ogólnie: "  << Vector3D::HowManyVectorsTotal() << endl;
-    usleep(5'000'000);
+    usleep(2'000'000);
     
 //    lol[0].TranslationRaw(Vector3D({20,20,0}));
-    lol[0].RotationRaw(MatrixRot3x3(90, MatrixRot3x3::Axis::OZ));
-    
-    cout << "Vectorów3D teraz: "    << Vector3D::HowManyVectorsNow() << endl;
-    cout << "Vectorów3D ogólnie: "  << Vector3D::HowManyVectorsTotal() << endl;
+//    lol[0].RotationRaw(MatrixRot3x3(90, MatrixRot3x3::Axis::OZ));
+
     
 //    lol[0].Translation(Vector3D({20,20,0}), 40);
-//    lol[0].Rotation(90,  MatrixRot3x3::Axis::OZ, 30);
+//    lol[0].Rotation(360,  MatrixRot3x3::Axis::OZ, 180);
 
     usleep(100'000);
 

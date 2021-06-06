@@ -1,8 +1,6 @@
 #include "Scene.hpp"
-#include <fstream>
 #include <tuple>
-#include <unistd.h>
-#include <pthread.h>
+#include <utility>
 
 /**
  * @file
@@ -20,12 +18,13 @@
  *
  * @param range - wektor którego odpowiednie składowe odpowiadają za zakres wartości na osiach.
  */
-Scene::Scene(float fr) : count{0}, drawFlag{false}, frequency{fr}
+Scene::Scene(float fr) : count{0}, frequency{fr}
 {
     system("mkdir -p temp");
     
     ZmienTrybRys(PzG::TR_3D);
-//    EnableDrawing();    //TODO: remove
+    
+    objects.reserve(32);
 }
 
 
@@ -37,7 +36,6 @@ Scene::Scene(float fr) : count{0}, drawFlag{false}, frequency{fr}
 void Scene::Draw()
 {
     for(auto& fig: objects)
-//        while(!fig->ReadyToDraw())  ;
         fig->Draw();
     
 
@@ -52,14 +50,11 @@ void Scene::Draw()
  */
 void Scene::AddObject(const std::shared_ptr<Figure>& object)
 {
+    object->SetScene(this);
     AddNewFile(object->FileName("temp/object" + std::to_string(++count)));
     objects.push_back(object);
     
-    std::cout << "Vectorów3D teraz: "    << Vector3D::HowManyVectorsNow() << std::endl;
-    std::cout << "Vectorów3D ogólnie: "  << Vector3D::HowManyVectorsTotal() << std::endl;
-    
     Draw();
-
 }
 
 /**
@@ -98,44 +93,15 @@ bool Scene::AddNewFile(std::string fileName, PzG::RodzajRysowania drawType, int 
     return DodajNazwePliku(fileName.c_str(), drawType, width);
 }
 
-void Scene::SetRange(Vector3D range)
+void Scene::SetRange(double rangee)
 {
-    UstawZakresX(-range[0], range[0]);
-    UstawZakresY(-range[1], range[1]);
-    UstawZakresZ(-range[2], range[2]);
+    range = std::move(rangee);
+    UstawZakresX(-range, range);
+    UstawZakresY(-range, range);
+    UstawZakresZ(-range, range);
 }
 
 Scene::~Scene()
 {
     system("rm -r temp");
-    
-    DisableDrawing();
 }
-
-void Scene::EnableDrawing()
-{
-    drawFlag = true;
-    pthread_t threads;
-    
-    pthread_create(&threads, NULL, DrawThread, new std::tuple<Scene*, float, volatile bool&>(this,frequency,drawFlag));
-}
-
-void *DrawThread([[maybe_unused]] void *arg)
-{
-//    auto [scene, frequency, threadEnable] = *(reinterpret_cast<std::tuple<Scene*, float, volatile bool&>*>(arg));
-    auto krotka =  *(reinterpret_cast<std::tuple<Scene*, float, volatile bool&>*>(arg));
-    auto scene = std::get<0>(krotka);
-    auto frequency = std::get<1>(krotka);
-    auto& threadEnable = std::get<2>(krotka);
-    delete reinterpret_cast<std::tuple<Scene*, float, volatile bool&>*>(arg);
-    
-    while(threadEnable)
-    {
-        scene->Draw();
-        usleep(1'000'000./frequency);
-    }
-    
-    pthread_exit(nullptr);
-}
-
-

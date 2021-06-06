@@ -17,15 +17,23 @@ add_library(Figure src/Figure.cpp inc/Figure.hpp fml/Figure.tpp)
 target_link_libraries(Figure Vector Matrix)
 target_include_directories(Figure PUBLIC ./inc ./src ./fml)
 
+add_library(Prism src/Prism.cpp inc/Prism.hpp)
+target_link_libraries(Prism Figure)
+target_include_directories(Prism PUBLIC ./inc ./src)
+
 add_library(Cuboid src/Cuboid.cpp inc/Cuboid.hpp)
 target_link_libraries(Cuboid Figure)
 target_include_directories(Cuboid PUBLIC ./inc ./src)
+
+add_library(Surface src/Surface.cpp inc/Surface.hpp)
+target_link_libraries(Surface Figure)
+target_include_directories(Surface PUBLIC ./inc ./src)
 
 add_library(Scene src/Scene.cpp inc/Scene.hpp)
 target_link_libraries(Scene Cuboid Gnuplot)
 target_include_directories(Scene PUBLIC ./inc ./src)
 
-set(LIBS Gnuplot Vector Matrix Cuboid Figure Scene)
+set(LIBS Gnuplot Vector Matrix Cuboid Figure Scene Prism Surface)
 set(GCC_Compile_Flags -lpthread -Wall -Wextra -pedantic -O3)
 
 set(CMAKE_CXX_FLAGS -pthread)
