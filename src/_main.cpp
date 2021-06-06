@@ -4,6 +4,7 @@
 #include <Cuboid.hpp>
 #include <Prism.hpp>
 #include <Surface.hpp>
+#include <BrokenLine.hpp>
 
 using namespace std;
 
@@ -13,7 +14,9 @@ int main ()
     Scene lol(30);
     
     lol.SetRange(50);
-    lol.AddObject(std::make_shared<Surface>(lol.GetRange()));
+//    lol.AddObject(std::make_shared<Surface>(lol.GetRange()));
+//    lol.AddObject(std::make_shared<BrokenLine>(vector<Vector3D>({Vector3D({0,0,-50}), Vector3D({0,0,0}),
+//                                                                 Vector3D({30,20,0}), Vector3D({30,20,-50}) })));
 //    lol.AddObject(std::make_shared<Prism>(Vector3D({0,0,0}), 20, 50));
 //    lol.AddObject(std::make_shared<Cuboid>(Vector3D({50,50,-20}), 20, 30,15));
     
