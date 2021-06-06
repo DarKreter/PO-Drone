@@ -8,7 +8,7 @@
  */
 
 #include <iostream>
-#include <Matrix.hpp>
+#include <MatrixRot.hpp>
 #include <Vector.hpp>
 #include "MatrixRot.hpp"
 #include "Figure.hpp"
@@ -29,46 +29,17 @@ class Cuboid: public Figure
      * Prostopadłościan jest zlokalizowany w przestrzeni 3D
      * Pojedyńczy punkt jest zmodelowany za pomocą klasy Vector3D
      */
-	std::array<Vector3D, 8> vertices;
+    double width, length, height;
 
 public:
     /**
      * \brief Inicjalizuje wierzchołki prostopadłościanu, na podstawie danych z pliku.
      */
-    explicit Cuboid(std::string name);
+    explicit Cuboid(const Vector3D& localCenter, double w, double l, double h, const MatrixRot3x3& matRot = MatrixRot3x3());
     
-
-    /**
-     * \brief Operator dostępowy do wierzchołków prostopadłościanu
-     */
-	const Vector3D& operator[](unsigned int n) const;
-    /**
-    * \brief Operator dostępowy do wierzchołków prostopadłościanu
-    */
-    Vector3D& operator[](unsigned int n);
-
-    /**
-     * \brief  Rotacja bryły.
-     */
-	void Rotation(MatrixRot3x3 mRotacji);
-
-    /**
-     * \brief  Translacja bryły.
-     */
-	void Translation(Vector3D wektor) override;
-	
-	void Draw() override;
-
+    std::vector<Vector3D>& CalcLocalCoords(std::vector<Vector3D>&) override;
+    
 };
 
-/**
- * \brief  Wpisuje prostopadłościan do strumienia.
- */
-std::ostream& operator << (std::ostream& strm, const Cuboid& pr);
-
-/**
- * \brief  Wczytuje prostopadłościan ze strumienia.
- */
-std::istream& operator >> (std::istream& strm, Cuboid& pr);
 
 #endif

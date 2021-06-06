@@ -1,19 +1,19 @@
-#include "Matrix.hpp"
+#include "MatrixRot.hpp"
 #include <cmath>
 
 /**
  * @file
- * @brief Definicje szablonów klasy Matrix
+ * @brief Definicje szablonów klasy MatrixRot
  */
 
 /**
- * Tworzy macierz rotacji na podstawie innego obiektu klasy Matrix o tym samym rozmiarze
+ * Tworzy macierz rotacji na podstawie innego obiektu klasy MatrixRot o tym samym rozmiarze
  *
  * @tparam SIZE - Określa wymiar macierzy rotacji
  * @param druga - niemodyfikowalna referencja do obiektu z którego będziemy kopiować
  */
 template<size_t SIZE>
-Matrix<SIZE>::Matrix(const Matrix<SIZE> &druga)
+MatrixRot<SIZE>::MatrixRot(const MatrixRot<SIZE> &druga)
 {
     for(std::size_t i=0; i<SIZE;++i)
         tab[i] = druga[i];
@@ -25,7 +25,7 @@ Matrix<SIZE>::Matrix(const Matrix<SIZE> &druga)
  * @tparam SIZE - Określa wymiar macierzy rotacji
  */
 template<size_t SIZE>
-Matrix<SIZE>::Matrix(): tab{}
+MatrixRot<SIZE>::MatrixRot(): tab{}
 {
     for(std::size_t i=0;i<SIZE;++i)
         tab[i][i] = 1;
@@ -40,7 +40,7 @@ Matrix<SIZE>::Matrix(): tab{}
  * @return Zwraca referencję do obiektu do którego wpisywalismy dane
  */
 template<std::size_t SIZE>
-Matrix<SIZE> &Matrix<SIZE>::operator=(const Matrix<SIZE> &drugi)
+MatrixRot<SIZE> &MatrixRot<SIZE>::operator=(const MatrixRot<SIZE> &drugi)
 {
     if(&drugi == this)
         return (*this);
@@ -61,10 +61,10 @@ Matrix<SIZE> &Matrix<SIZE>::operator=(const Matrix<SIZE> &drugi)
  * @return zwraca odpowiedni niemodyfikowalny wiersz macierzy rotacji
  */
 template<size_t SIZE>
-const Vector<SIZE>& Matrix<SIZE>::operator[](unsigned int n) const
+const Vector<SIZE>& MatrixRot<SIZE>::operator[](unsigned int n) const
 {
 	if (n < 0 || n >= SIZE)
-		throw std::out_of_range{ "Matrix<" + std::to_string(SIZE) + "> out of range!" };
+		throw std::out_of_range{ "MatrixRot<" + std::to_string(SIZE) + "> out of range!" };
 
 	return tab[n];
 }
@@ -79,10 +79,10 @@ const Vector<SIZE>& Matrix<SIZE>::operator[](unsigned int n) const
  * @return zwraca referencję do wiersza macierzy rotacji który chcemy zmodyfikować
  */
 template<size_t SIZE>
-Vector<SIZE>& Matrix<SIZE>::operator[](unsigned int n)
+Vector<SIZE>& MatrixRot<SIZE>::operator[](unsigned int n)
 {
 	if (n < 0 || n >= SIZE)
-		throw std::out_of_range{ "Matrix<" + std::to_string(SIZE) + "> out of range!" };
+		throw std::out_of_range{ "MatrixRot<" + std::to_string(SIZE) + "> out of range!" };
 
 	return tab[n];
 }
@@ -95,7 +95,7 @@ Vector<SIZE>& Matrix<SIZE>::operator[](unsigned int n)
  * @return Zwracamy wektor który jest wynikiem mnożenia
  */
 template<size_t SIZE>
-Vector<SIZE> Matrix<SIZE>::operator*(const Vector<SIZE>& v) const
+Vector<SIZE> MatrixRot<SIZE>::operator*(const Vector<SIZE>& v) const
 {
 	Vector<SIZE> temp;
 
@@ -114,9 +114,9 @@ Vector<SIZE> Matrix<SIZE>::operator*(const Vector<SIZE>& v) const
  * @return Zwracamy macierz która jest wynikiem mnożenia
  */
 template<size_t SIZE>
-Matrix<SIZE> Matrix<SIZE>::operator*(const Matrix<SIZE>& m) const
+MatrixRot<SIZE> MatrixRot<SIZE>::operator*(const MatrixRot<SIZE>& m) const
 {
-	Matrix<SIZE> temp;
+	MatrixRot<SIZE> temp;
     for (std::size_t  w = 0; w < SIZE; ++w)
         temp[w][w] = 0;;
     
@@ -129,8 +129,20 @@ Matrix<SIZE> Matrix<SIZE>::operator*(const Matrix<SIZE>& m) const
 }
 
 template<size_t SIZE>
-Matrix<SIZE>::Matrix(std::array<Vector<SIZE>, SIZE> a): tab{a}
+MatrixRot<SIZE>::MatrixRot(std::array<Vector<SIZE>, SIZE> a): tab{a}
 {}
+
+template<size_t SIZE>
+MatrixRot<SIZE> &MatrixRot<SIZE>::operator=(MatrixRot<SIZE> &&drugi) noexcept
+{
+    if(&drugi == this)
+        return (*this);
+    
+    for(std::size_t i = 0;i<SIZE;++i)
+        tab[i] = drugi[i];
+    
+    return (*this);
+}
 
 /**
  * Wypisanie macierzy rotacji na odpowiedni strumień
@@ -140,7 +152,7 @@ Matrix<SIZE>::Matrix(std::array<Vector<SIZE>, SIZE> a): tab{a}
  * @return Zwracamy referencję do przysłanego strumienia
  */
 template<size_t SIZE>
-std::ostream& operator<<(std::ostream& strm, const Matrix<SIZE>& mac)
+std::ostream& operator<<(std::ostream& strm, const MatrixRot<SIZE>& mac)
 {
 	for (std::size_t i = 0; i < SIZE; ++i)
 		std::cout << mac[i] << (i == SIZE-1? " ": "\n");

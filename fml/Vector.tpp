@@ -3,9 +3,11 @@
 #include <cmath>
 #include <limits>
 
+template<std::size_t SIZE>
+int Vector<SIZE>::hmvn = 0;
 
-
-
+template<std::size_t SIZE>
+int Vector<SIZE>::hmvt = 0;
 /**
  * @file
  * @brief Definicje szablonów klasy Vector
@@ -122,6 +124,26 @@ double Vector<SIZE>::Length()
 template<std::size_t SIZE>
 Vector<SIZE> &Vector<SIZE>::operator=(const Vector<SIZE> &drugi)
 {
+    if(&drugi == this)
+        return (*this);
+    
+    for(uint16_t i = 0;i<SIZE;++i)
+        tab[i] = drugi[i];
+    
+    return (*this);
+}
+
+/**
+ * Funkcja kopiująca wartości współrzędnych wektora do innego obiektu tej samej klasy
+ * Jeśli spróbujemy wpisać obiekt do samego siebie, funkcja jedynie zwróci referencję do samego siebie.
+ *
+ * @tparam SIZE - Określa wymiar wektora
+ * @param drugi - Obiekt z którego kopiujemy wartości współrzędnych
+ * @return Zwraca referencję do obiektu do którego wpisywalismy dane
+ */
+template<std::size_t SIZE>
+Vector<SIZE>& Vector<SIZE>::operator=(Vector<SIZE>&& drugi) noexcept
+ {
     if(&drugi == this)
         return (*this);
     

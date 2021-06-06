@@ -1,5 +1,8 @@
 #include "Scene.hpp"
 #include <fstream>
+#include <tuple>
+#include <unistd.h>
+#include <pthread.h>
 
 /**
  * @file
@@ -7,7 +10,6 @@
  */
 
 
-std::uint16_t Scene::count = 0;
 
 /**
  * Na podstawie 3 wartości przesłanych w Wektorze3D,
@@ -18,26 +20,12 @@ std::uint16_t Scene::count = 0;
  *
  * @param range - wektor którego odpowiednie składowe odpowiadają za zakres wartości na osiach.
  */
-Scene::Scene()
+Scene::Scene(float fr) : count{0}, drawFlag{false}, frequency{fr}
 {
     system("mkdir -p temp");
     
     ZmienTrybRys(PzG::TR_3D);
-    
-    
-}
-
-bool Scene::AddNewFile(std::string fileName, PzG::RodzajRysowania drawType, int width)
-{
-    system(("touch " + fileName).c_str());
-    return DodajNazwePliku(fileName.c_str(), drawType, width);
-}
-
-void Scene::SetRange(Vector3D range)
-{
-    UstawZakresX(-range[0], range[0]);
-    UstawZakresY(-range[1], range[1]);
-    UstawZakresZ(-range[2], range[2]);
+//    EnableDrawing();    //TODO: remove
 }
 
 
@@ -48,8 +36,10 @@ void Scene::SetRange(Vector3D range)
  */
 void Scene::Draw()
 {
-    for(auto fig: objects)
+    for(auto& fig: objects)
+//        while(!fig->ReadyToDraw())  ;
         fig->Draw();
+    
 
     Rysuj();
 }
@@ -60,10 +50,16 @@ void Scene::Draw()
  *
  * @param object - nazwa pliku w którym zapisane są wszystkie wierzchołki
  */
-void Scene::AddObject(std::shared_ptr<Figure> object)
+void Scene::AddObject(const std::shared_ptr<Figure>& object)
 {
     AddNewFile(object->FileName("temp/object" + std::to_string(++count)));
     objects.push_back(object);
+    
+    std::cout << "Vectorów3D teraz: "    << Vector3D::HowManyVectorsNow() << std::endl;
+    std::cout << "Vectorów3D ogólnie: "  << Vector3D::HowManyVectorsTotal() << std::endl;
+    
+    Draw();
+
 }
 
 /**
@@ -96,23 +92,50 @@ Figure& Scene::operator[](unsigned int n)
     return *(objects[n]);
 }
 
+bool Scene::AddNewFile(std::string fileName, PzG::RodzajRysowania drawType, int width)
+{
+    system(("touch " + fileName).c_str());
+    return DodajNazwePliku(fileName.c_str(), drawType, width);
+}
+
+void Scene::SetRange(Vector3D range)
+{
+    UstawZakresX(-range[0], range[0]);
+    UstawZakresY(-range[1], range[1]);
+    UstawZakresZ(-range[2], range[2]);
+}
+
 Scene::~Scene()
 {
     system("rm -r temp");
+    
+    DisableDrawing();
+}
+
+void Scene::EnableDrawing()
+{
+    drawFlag = true;
+    pthread_t threads;
+    
+    pthread_create(&threads, NULL, DrawThread, new std::tuple<Scene*, float, volatile bool&>(this,frequency,drawFlag));
+}
+
+void *DrawThread([[maybe_unused]] void *arg)
+{
+//    auto [scene, frequency, threadEnable] = *(reinterpret_cast<std::tuple<Scene*, float, volatile bool&>*>(arg));
+    auto krotka =  *(reinterpret_cast<std::tuple<Scene*, float, volatile bool&>*>(arg));
+    auto scene = std::get<0>(krotka);
+    auto frequency = std::get<1>(krotka);
+    auto& threadEnable = std::get<2>(krotka);
+    delete reinterpret_cast<std::tuple<Scene*, float, volatile bool&>*>(arg);
+    
+    while(threadEnable)
+    {
+        scene->Draw();
+        usleep(1'000'000./frequency);
+    }
+    
+    pthread_exit(nullptr);
 }
 
 
-
-/*!
- * Usuwa figure z wektora.
- * Jeśli numer figury jest błędny, rzuca wyjątek typu std::out_of_range
- *
- * @param n - indeks bryły do usunięcia w zakresie [1;ILOŚĆ_BRYŁ]
- */
-//void Scene::RemoveObject(uint16_t)
-//{
-//    if ( n >= size())
-//        throw std::out_of_range{"Figure out of range!"};
-//
-//    objects.erase(objects.begin() + n);
-//}

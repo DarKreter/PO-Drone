@@ -26,20 +26,24 @@ class Vector
      * @brief Tablica przechowująca wszystkie współrzędne wektora
      */
 	std::array<double, SIZE> tab;
-	
+	static int hmvn;
+	static int hmvt;
 public:
+	static int HowManyVectorsNow() 	{return hmvn;}
+	static int HowManyVectorsTotal() 	{return hmvt;}
+	
     /**
      * @brief Inicjalizuje wektor
      *
      * Ustawia wszystkie współrzędne na zera
      */
-	Vector(): tab{}										    {;}
+	Vector(): tab{}										    {hmvn++; hmvt++;}
 	
 	/**
 	 * @brief Inicjalizuje wektor na podstawie wspołrzędnych w tablicy
 	 * @param pkt - tablica współrzędnych które zostaną skopiowane do tablicy wektora
 	 */
-	explicit Vector(std::array<double, SIZE> pkt) : tab{ pkt }		{;}
+	explicit Vector(std::array<double, SIZE> pkt) : tab{ pkt }		{hmvn++;hmvt++;}
 	
 	/**
 	 * @brief Konstruktor kopiujący
@@ -48,7 +52,9 @@ public:
 	 *
 	 * @param temp - niemodyfikowalna referencja do obiektu z którego będziemy kopiować
 	 */
-	Vector(const Vector<SIZE>& temp) : tab{ temp.tab }		{;}
+	Vector(const Vector<SIZE>& temp) : tab{ temp.tab }		{hmvn++;hmvt++;}
+	
+	Vector(Vector<SIZE>&& temp)  noexcept : tab{ temp.tab }		{hmvn++;hmvt++;}
     
     /**
     * \brief Operator dostępowy do współrzędnych wektora.
@@ -80,11 +86,22 @@ public:
 	 */
     Vector<SIZE>& operator=(const Vector<SIZE>& drugi);
 	
+	/**
+     * @brief Modeluje pojęcie kopiującego operatora przypisania
+     */
+	Vector<SIZE>& operator=(Vector<SIZE>&& drugi) noexcept;
+	
     /**
      * @brief Liczy długość wektora
      */
 	double Length();
+	
+	operator double()
+	{
+		return Length();
+	}
 
+	virtual ~Vector()	{hmvn--;}
 };
 
 /**

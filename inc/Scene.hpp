@@ -31,13 +31,18 @@ class Scene
 
     bool AddNewFile(std::string fileName, PzG::RodzajRysowania drawType = PzG::RR_Ciagly, int width = 2);
     
-    static std::uint16_t count;
+    std::uint16_t count;
+    volatile bool drawFlag;
+    const float frequency;
+    
 public:
+    void EnableDrawing();
+    void DisableDrawing() {drawFlag = false;}
     
     /*
      * @brief Inicjalizuje scene za pomocą zakresu wartości na osiach.
      */
-    Scene();
+    Scene(float fr = 60);
     
     void SetRange(Vector3D range);
     
@@ -49,7 +54,7 @@ public:
     /**
      * @brief Dodanie nowej figury
      */
-    void AddObject(std::shared_ptr<Figure> object);
+    void AddObject(const std::shared_ptr<Figure>& object);
 
     /**
      * @brief Usunięcie bryły z przestrzeni na podstawie jej numeru
@@ -82,5 +87,7 @@ public:
     
 };
 
+
+void *DrawThread([[maybe_unused]] void *arg);
 
 #endif //SCENE_HPP

@@ -3,7 +3,7 @@
 
 /**
  * @file
- * @brief Definicje poszczególnych specjalizacji funkcji składowych klasy Matrix
+ * @brief Definicje poszczególnych specjalizacji funkcji składowych klasy MatrixRot
  */
 
 
