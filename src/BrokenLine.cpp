@@ -4,19 +4,21 @@
 
 #include "BrokenLine.hpp"
 #include <fstream>
+#include <utility>
 
 
 BrokenLine::BrokenLine(Scene *scene, std::vector<Vector3D> p)
-        : Figure(scene, "SomethingWentWrong.jpg", 0, MatrixRot3x3(), Vector3D()), points{p}
+        : Figure(scene, "SomethingWentWrong.jpg", 128, MatrixRot3x3(), Vector3D()), points{std::move(p)}
 {}
 
-void BrokenLine::Draw()
+
+std::vector<Vector3D>& BrokenLine::CalcLocalCoords(std::vector<Vector3D>& vertices)
 {
-    std::ofstream str(fileName);
     for(auto& point: points)
-        str << point << std::endl;
+        vertices.push_back(point);
     
-    str.close();
+    return vertices;
 }
+
 
 

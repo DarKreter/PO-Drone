@@ -7,10 +7,12 @@
 #include <MatrixRot.hpp>
 #include <Cuboid.hpp>
 #include <Prism.hpp>
+#include <BrokenLine.hpp>
 
 
 class Drone: public Figure
 {
+public:
     std::shared_ptr<Cuboid> body, light1, light2;
     std::array<std::shared_ptr<Prism>,4> rotors;
 
@@ -27,6 +29,9 @@ public:
     void RotationRaw(const MatrixRot3x3& macRot);
     
     void Draw() override;
+    
+    void Route(double nr, double angle);
+    std::shared_ptr<BrokenLine> CreateRoute(double nr, double angle);
     
     void SetCenter();
     void ClearCenter();

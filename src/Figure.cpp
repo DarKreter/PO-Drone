@@ -31,9 +31,8 @@ void Figure::Draw()
 {
     std::vector<Vector3D> vertices;
     vertices.reserve(32);
-    
+
     CalcGlobalCoords(CalcLocalCoords(vertices));
-    
     
     std::ofstream str(fileName);
     int i =0;
@@ -42,7 +41,7 @@ void Figure::Draw()
         str << vertex << std::endl << (i%fileNewLine==(fileNewLine-1)?"\n":"");
         i++;
     }
-    str.close();
+    str.close();;
 }
 
 void Figure::TranslationRaw(const Vector3D &wektor)
@@ -97,5 +96,10 @@ void Figure::RotationGlobal(double angle, MatrixRot3x3::Axis axis,  double speed
                 this->RotationRawGlobal(MatrixRot3x3(angle * divider, axis));
             },
             angle, speed, whereIAm->Frequency());
+}
+
+Figure::~Figure()
+{
+    whereIAm->RemoveLastFile(fileName);
 }
 

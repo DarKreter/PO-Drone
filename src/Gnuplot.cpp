@@ -130,7 +130,7 @@ namespace PzG {
     void LaczeDoGNUPlota::KomunikatBledu(const char *Komunikat) const
     {
         if (!CzyWyswietlacKomunikaty()) return;
-        cerr << Komunikat << endl;
+//        cerr << Komunikat << endl;
     }
 
 

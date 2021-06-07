@@ -59,9 +59,11 @@ public:
     std::string FileName(std::string sf) {return fileName = sf;}
     void SetScene(Scene*s) {whereIAm = s;}
     void Nested() { nested = true; }
+    Vector3D LocalCoordCenter() { return localCoordCenter; }
     void RotationCenter(Vector3D* w) {rotationCenter = w;}
     void ClearRotationCenter() {rotationCenter = &localCoordCenter;}
 
+    ~Figure();
 };
 
 #include<Figure.tpp>

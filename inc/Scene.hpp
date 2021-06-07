@@ -37,6 +37,7 @@ class Scene
     
 public:
     bool AddNewFile(std::string fileName, PzG::RodzajRysowania drawType = PzG::RR_Ciagly, int width = 2);
+    void RemoveLastFile(std::string fileName);
     
     
     double Frequency() const { return frequency; }
@@ -60,6 +61,11 @@ public:
     void AddObject(const std::shared_ptr<Figure>& object);
     
     /**
+     * @brief Dodanie nowej figury
+     */
+    void RemoveObject(std::size_t n);
+    
+    /**
      * @brief Dodanie nowego drona
      */
     void AddDrone(const std::shared_ptr<Drone>& drone);
@@ -80,6 +86,12 @@ public:
     * \brief Operator dostępowy do figur na scenie
     */
     Figure& operator[](unsigned int n);
+    
+    /**
+    * \brief Operator dostępowy do figur na scenie
+    */
+    std::shared_ptr<Drone> operator()(unsigned int n);
+    
 
     /**
      * @brief Destruktor

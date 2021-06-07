@@ -18,9 +18,11 @@ public:
     
     explicit BrokenLine(Scene *scene, std::vector<Vector3D> p);
     
-    std::vector<Vector3D>& CalcLocalCoords(std::vector<Vector3D>& a) override {return a;}
+    std::vector<Vector3D>& CalcLocalCoords(std::vector<Vector3D>& a) override;
     
-    void Draw() override;
+//    void Draw() override;
+
+    ~BrokenLine() {;}
     
 };
 

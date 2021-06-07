@@ -1,5 +1,3 @@
-#include <unistd.h>
-#include <pthread.h>
 #include <Scene.hpp>
 #include <Cuboid.hpp>
 #include <Prism.hpp>
@@ -8,45 +6,124 @@
 #include <Drone.hpp>
 
 using namespace std;
-
+void Menu(std::shared_ptr<Drone> activeDrone);
 
 int main ()
 {
-    Scene lol(24);
-    lol.SetRange(100);
-    lol.AddObject(std::make_shared<Surface>(&lol, lol.GetRange()));
-    std::shared_ptr<Drone> dronik = std::make_shared<Drone>(&lol,Vector3D({10,0,0}), 30,20,20,
-                            MatrixRot3x3(0, MatrixRot3x3::Axis::OX));
-    lol.AddDrone(dronik);
-//    lol.AddObject(std::make_shared<BrokenLine>(vector<Vector3D>({Vector3D({0,0,-50}), Vector3D({0,0,0}),
-//                                                                 Vector3D({30,20,0}), Vector3D({30,20,-50}) })));
-//    lol.AddObject(std::make_shared<Prism>(Vector3D({0,0,0}), 20, 50));
-//    lol.AddObject(std::make_shared<Cuboid>(Vector3D({50,50,-20}), 20, 30,15));
-    
-    cout << "Vectorów3D teraz: "    << Vector3D::HowManyVectorsNow() << endl;
-    cout << "Vectorów3D ogólnie: "  << Vector3D::HowManyVectorsTotal() << endl;
-    usleep(5'000'000);
-    
-//    dronik->TranslationRaw(Vector3D({20,20,0}));
-//    dronik->RotationRaw(MatrixRot3x3(180, MatrixRot3x3::Axis::OZ));
-    
-    
-    dronik->Rotation(180,  MatrixRot3x3::Axis::OZ, 180);
-    dronik->Translation(Vector3D({-50,0,0}), 50);
 
-    usleep(100'000);
+
+
+//    if (argc < 2)
+//    {
+//        cout << "Brak nazwy pliku z prostokatem jako argument wywolania!" << endl;
+//        exit(1);
+//    }
+    
+    try
+    {
+        
+        char znak; uint16_t nr, angle;
+        Scene scene(24);
+        std::shared_ptr<Drone> activeDrone = nullptr;
 
     
-    cout << "Vectorów3D teraz: "    << Vector3D::HowManyVectorsNow() << endl;
-    cout << "Vectorów3D ogólnie: "  << Vector3D::HowManyVectorsTotal() << endl;
+        scene.SetRange(100);
     
-    usleep(40'000'000);
+        scene.AddObject(std::make_shared<Surface>(&scene, scene.GetRange()));
+        
+        std::shared_ptr<Drone> dronik = std::make_shared<Drone>(&scene,Vector3D({-10,50,10}), 30,20,20,
+                                                                MatrixRot3x3(60, MatrixRot3x3::Axis::OZ));
+        scene.AddDrone(dronik);
+        dronik = std::make_shared<Drone>(&scene,Vector3D({70,-20,10}), 30,20,20,
+                                         MatrixRot3x3(0, MatrixRot3x3::Axis::OZ));
+        scene.AddDrone(dronik);
+        
+        activeDrone = scene(0);
+        if(system("clear") != 0)
+            cout << "Error podczas użycia komendy systemowej!" << endl;
+        Menu(activeDrone);
+        
+        
+        while (true)
+        {
+            
+            cout << "Twoj wybor? (m - menu): ";
+            cin >> znak;
+            switch (znak)
+            {
+                
+                case 'a':
+                    cout << endl << "Wybor aktywnego drona\n\n"
+                        << "1 - Polozenie (x,y): " << setw(5) << scene(0)->LocalCoordCenter()[0] << " "
+                        << setw(5) << scene(0)->LocalCoordCenter()[1] << (scene(0) == activeDrone ?  "\t<-- Dron aktywny": "") << endl
+                        << "2 - Polozenie (x,y): " << setw(5) << scene(1)->LocalCoordCenter()[0] << " "
+                        << setw(5) << scene(1)->LocalCoordCenter()[1] << (scene(1) == activeDrone ?  "\t<-- Dron aktywny": "") << endl;
+                    cout << endl << "Wprowadz numer aktywnego drona: ";
+                    
+                    cin >> nr;
+                    cout << endl;
+                    activeDrone = scene(nr-1);
+                    break;
+                case 'p':
+                    cout << setw(41) << "Podaj kierunek lotu (kat w stopniach): ";  cin >> angle;
+                    cout << setw(41) << "Podaj dlugosc lotu: ";  cin >> nr;
+                    cout << endl;
+        
+        
+                    activeDrone->Route(nr, angle);
+                    
+                    break;
+                
+                case 'm':
+                    Menu(activeDrone);
+                    break;
+                
+                case 'c':
+                    if(system("clear") != 0)
+                        cout << "Error podczas użycia komendy systemowej!" << endl;
+                    break;
+                
+                case 'k':
+                    return 0;
+                
+                case ' ': case '\t': case '\n':
+                    break;
+                default:
+                    cout << "Nie rozpoznana opcja!" << endl;
+                    cin.ignore(std::numeric_limits<int>::max(), '\n');
+                
+            }
+            
+        }
+    }
     
-//
-//    lol.AddObject(std::make_shared<Cuboid>("pr2.dat"));
-//    usleep(4'000'000);
-    
-    pthread_exit(nullptr);
+    catch (std::runtime_error& e)
+    {
+        cout << e.what() << endl;
+    }
+    catch (std::out_of_range& e)
+    {
+        cout << e.what() << endl;
+    }
+    catch (...)
+    {
+        cout << "Wystapil nie rozpoznany blad!" << endl;
+    }
     
 }
 
+
+
+void Menu(std::shared_ptr<Drone> activeDrone)
+{
+    cout << "Polozenie drona aktywnego (x,y): " << activeDrone->LocalCoordCenter()[0] << " " << activeDrone->LocalCoordCenter()[1] << endl << endl;
+    
+    cout << "a - wybierz aktywnego drona" << endl
+         << "p - zadaj parametry obrotu" << endl
+         << "m - wyswietl menu" << endl
+         << "c - czysci ekran" << endl
+         << "k - koniec dzialania programu" << endl << endl;
+    
+    cout << "Aktualna ilosc obiektow Vector3D: "  << Vector3D::HowManyVectorsNow() << endl;
+    cout << "  Laczna ilosc obiektow Vector3D: "  << Vector3D::HowManyVectorsTotal() << endl << endl;
+}

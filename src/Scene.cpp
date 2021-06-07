@@ -42,7 +42,6 @@ void Scene::Draw()
     for(auto& drone: drones)
         drone->Draw();
     
-
     Rysuj();
 }
 
@@ -54,8 +53,9 @@ void Scene::Draw()
  */
 void Scene::AddObject(const std::shared_ptr<Figure>& object)
 {
-    objects.push_back(object);
     
+    objects.push_back(object);
+
     Draw();
 }
 
@@ -96,6 +96,14 @@ Figure& Scene::operator[](unsigned int n)
     return *(objects[n]);
 }
 
+std::shared_ptr<Drone> Scene::operator()(unsigned int n)
+{
+    if ( n >= drones.size())
+        throw std::out_of_range{"Figure out of range!"};
+    return (drones[n]);
+}
+
+
 bool Scene::AddNewFile(std::string fileName, PzG::RodzajRysowania drawType, int width)
 {
     system(("touch " + fileName).c_str());
@@ -107,10 +115,24 @@ void Scene::SetRange(double rangee)
     range = std::move(rangee);
     UstawZakresX(-range, range);
     UstawZakresY(-range, range);
-    UstawZakresZ(-range, range);
+    UstawZakresZ(0, 2*range);
 }
 
 Scene::~Scene()
 {
-    system("rm -r temp");
+//    system("rm -r temp");
+}
+
+void Scene::RemoveObject(std::size_t n)
+{
+    objects.erase(objects.begin()+n);
+
+    Draw();
+}
+
+void Scene::RemoveLastFile(std::string fileName)
+{
+    UsunOstatniaNazwe();
+    system(("rm -f " + fileName).c_str());
+    system(("touch -f " + fileName).c_str());
 }
