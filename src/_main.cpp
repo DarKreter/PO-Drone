@@ -15,7 +15,7 @@ int main ()
     {
         
         char znak; uint16_t nr, angle;
-        Scene scene(24);
+        Scene scene(30);
         std::shared_ptr<Drone> activeDrone = nullptr;
 
     
