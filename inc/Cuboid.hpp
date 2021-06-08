@@ -40,6 +40,8 @@ public:
     
     std::vector<Vector3D>& CalcLocalCoords(std::vector<Vector3D>&) override;
     
+    double Height() {return height;}
+    
 };
 
 

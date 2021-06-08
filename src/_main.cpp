@@ -10,14 +10,6 @@ void Menu(std::shared_ptr<Drone> activeDrone);
 
 int main ()
 {
-
-
-
-//    if (argc < 2)
-//    {
-//        cout << "Brak nazwy pliku z prostokatem jako argument wywolania!" << endl;
-//        exit(1);
-//    }
     
     try
     {
@@ -27,16 +19,16 @@ int main ()
         std::shared_ptr<Drone> activeDrone = nullptr;
 
     
-        scene.SetRange(100);
+        scene.SetRange(500);
     
         scene.AddObject(std::make_shared<Surface>(&scene, scene.GetRange()));
         
-        std::shared_ptr<Drone> dronik = std::make_shared<Drone>(&scene,Vector3D({-10,50,10}), 30,20,20,
-                                                                MatrixRot3x3(60, MatrixRot3x3::Axis::OZ));
-        scene.AddDrone(dronik);
-        dronik = std::make_shared<Drone>(&scene,Vector3D({70,-20,10}), 30,20,20,
-                                         MatrixRot3x3(0, MatrixRot3x3::Axis::OZ));
-        scene.AddDrone(dronik);
+        std::shared_ptr<Drone> drone = std::make_shared<Drone>(&scene, Vector3D({-10, 50, 10}), 30, 20, 20,
+                                                               MatrixRot3x3(60, MatrixRot3x3::Axis::OZ));
+        scene.AddDrone(drone);
+        drone = std::make_shared<Drone>(&scene, Vector3D({-80, -20, 10}), 30, 20, 20,
+                                        MatrixRot3x3(-90, MatrixRot3x3::Axis::OZ));
+        scene.AddDrone(drone);
         
         activeDrone = scene(0);
         if(system("clear") != 0)

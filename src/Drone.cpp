@@ -153,7 +153,7 @@ void Drone::Route(double nr, double angle)
  
     //Animacja ruchu
     //Wznoszenie
-    Translation(trajectory[1] - trajectory[0], speed);
+    Translation(trajectory[1] - trajectory[0] - Vector3D({0,0,body->Height()/2}), speed);
     //Obrót
     Rotation(angle, MatrixRot3x3::Axis::OZ, speed);
     //Poruszanie sie
@@ -173,14 +173,14 @@ std::shared_ptr<BrokenLine> Drone::CreateRoute(double nr, double angle)
     std::vector<Vector3D> trajectory;
     //Zrobienie linii
     trajectory.push_back(Vector3D({0,0,-10}) +  this->LocalCoordCenter());
-    trajectory.push_back(Vector3D({0,0,150}) +  this->LocalCoordCenter());
+    trajectory.push_back(Vector3D({0,0,100}) +  this->LocalCoordCenter());
     trajectory.push_back(Vector3D({0,static_cast<double>(nr),0}) +  trajectory[1]);
-    trajectory.push_back(Vector3D({0,0,-160}) +  trajectory[2]);
+    trajectory.push_back(Vector3D({0,0,-110}) +  trajectory[2]);
     
     std::shared_ptr<BrokenLine> tr = std::make_shared<BrokenLine>(whereIAm, trajectory);
     Vector3D* test = new Vector3D(this->localCoordCenter);
     tr->RotationCenter(test);
-    tr->RotationRawGlobal(this->body->globalOrientation * MatrixRot3x3(angle, MatrixRot3x3::Axis::OZ));
+    tr->RotationRawGlobal(this->body->GlobalOrientation() * MatrixRot3x3(angle, MatrixRot3x3::Axis::OZ));
     
     whereIAm->AddObject(tr);
     

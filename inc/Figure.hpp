@@ -18,7 +18,7 @@ class Scene;
 
 class Figure
 {
-public:
+protected:
     std::string fileName;
     uint8_t fileNewLine;
     
@@ -39,11 +39,11 @@ public:
     //Wyliczyć wszystkie punkty bryły
     virtual std::vector<Vector3D>& CalcLocalCoords(std::vector<Vector3D>&) = 0;
     
-    //Przeliczyć je na układ globalny (mnożenie przez macierz plus translacja o środek)
-    void CalcGlobalCoords(std::vector<Vector3D>& vertices);
     bool nested = false;
     
 public:
+    //Przeliczyć je na układ globalny (mnożenie przez macierz plus translacja o środek)
+    void CalcGlobalCoords(std::vector<Vector3D>& vertices);
     
     virtual void Draw();
     
@@ -60,6 +60,7 @@ public:
     void SetScene(Scene*s) {whereIAm = s;}
     void Nested() { nested = true; }
     Vector3D LocalCoordCenter() { return localCoordCenter; }
+    MatrixRot3x3 GlobalOrientation() { return globalOrientation; }
     void RotationCenter(Vector3D* w) {rotationCenter = w;}
     void ClearRotationCenter() {rotationCenter = &localCoordCenter;}
 

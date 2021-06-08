@@ -22,7 +22,7 @@ public:
     
 //    void Draw() override;
 
-    ~BrokenLine() {;}
+    ~BrokenLine() {delete rotationCenter;}
     
 };
 

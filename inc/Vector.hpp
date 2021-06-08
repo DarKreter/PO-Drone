@@ -29,8 +29,8 @@ class Vector
 	static int hmvn;
 	static int hmvt;
 public:
-	static int HowManyVectorsNow() 	{return hmvn;}
-	static int HowManyVectorsTotal() 	{return hmvt;}
+	static int HowManyVectorsNow();
+	static int HowManyVectorsTotal();
 	
     /**
      * @brief Inicjalizuje wektor

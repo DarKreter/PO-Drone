@@ -153,6 +153,7 @@ Vector<SIZE>& Vector<SIZE>::operator=(Vector<SIZE>&& drugi) noexcept
     return (*this);
 }
 
+
 /**
  * Wczytanie wektora z odpowiedniego strumienia
  *
@@ -194,4 +195,16 @@ std::ostream& operator << (std::ostream& strm, const Vector<SIZE>& wek)
 		strm << std::setw(16) << std::fixed << std::setprecision(8) << wek[i] << (i == SIZE - 1 ? " " : "");
 
 	return strm;
+}
+
+template<std::size_t SIZE>
+int Vector<SIZE>::HowManyVectorsNow()
+{
+    return hmvn/2;
+}
+
+template<std::size_t SIZE>
+int Vector<SIZE>::HowManyVectorsTotal()
+{
+    return hmvt/20;
 }

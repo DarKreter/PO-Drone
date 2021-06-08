@@ -12,7 +12,7 @@
 
 class Drone: public Figure
 {
-public:
+private:
     std::shared_ptr<Cuboid> body, light1, light2;
     std::array<std::shared_ptr<Prism>,4> rotors;
 
