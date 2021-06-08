@@ -4,6 +4,8 @@
 #include <Surface.hpp>
 #include <BrokenLine.hpp>
 #include <Drone.hpp>
+#include <RidgeMountain.hpp>
+#include <Pyramid.hpp>
 
 using namespace std;
 void Menu(std::shared_ptr<Drone> activeDrone);
@@ -22,19 +24,25 @@ int main ()
         scene.SetRange(100);
     
         scene.AddObject(std::make_shared<Surface>(&scene, scene.GetRange()));
+  
+//        scene.AddObject(std::make_shared<RidgeMountain>(&scene, Vector3D({0, 0, 50}), 100, 20, 100, MatrixRot3x3()));
+        scene.AddObject(std::make_shared<Pyramid>(&scene, Vector3D({0, 0, 0}), 20, 20, 20, MatrixRot3x3()));
         
         std::shared_ptr<Drone> drone = std::make_shared<Drone>(&scene, Vector3D({-10, 50, 10}), 30, 20, 20,
                                                                MatrixRot3x3(60, MatrixRot3x3::Axis::OZ));
-        scene.AddDrone(drone);
+//        scene.AddDrone(drone);
         drone = std::make_shared<Drone>(&scene, Vector3D({-80, -20, 10}), 30, 20, 20,
                                         MatrixRot3x3(-90, MatrixRot3x3::Axis::OZ));
-        scene.AddDrone(drone);
+//        scene.AddDrone(drone);
         
-        activeDrone = scene(0);
+//        activeDrone = scene(0);
         if(system("clear") != 0)
             cout << "Error podczas użycia komendy systemowej!" << endl;
-        Menu(activeDrone);
+//        Menu(activeDrone);
         
+        
+        while(true)
+            usleep(1'000'000);
         
         while (true)
         {
