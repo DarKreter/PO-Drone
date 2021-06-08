@@ -28,7 +28,7 @@ class Scene
      *
      * Może ich od 1 do bardzo dużej ilości ograniczoną pamięcią urządzenia.
      */
-    std::vector<std::shared_ptr<Figure>> objects;
+    std::list<std::shared_ptr<Figure>> objects;
     std::vector<std::shared_ptr<Drone>> drones;
     
     double range;
@@ -36,8 +36,8 @@ class Scene
     const float frequency;
     
 public:
-    bool AddNewFile(std::string fileName, PzG::RodzajRysowania drawType = PzG::RR_Ciagly, int width = 2);
-    void RemoveLastFile(std::string fileName);
+    bool AddNewFile(const std::string& fileName, PzG::RodzajRysowania drawType = PzG::RR_Ciagly, int width = 2);
+    void RemoveLastFile(const std::string& fileName);
     
     
     double Frequency() const { return frequency; }
@@ -76,16 +76,7 @@ public:
      * @return Rozmiar wektora, przechowującego wszystkie figury
      */
     std::size_t size() const { return objects.size(); }
-
-    /**
-    * \brief Operator dostępowy do figur na scenie
-    */
-    const Figure& operator[](unsigned int n) const;
-
-    /**
-    * \brief Operator dostępowy do figur na scenie
-    */
-    Figure& operator[](unsigned int n);
+    
     
     /**
     * \brief Operator dostępowy do figur na scenie

@@ -55,9 +55,9 @@ void Drone::TranslationRaw(const Vector3D &wektor)
     {
         rotor->TranslationRaw(wektor);
         if(counter++ > 1)
-            rotor->RotationRawLocal(MatrixRot3x3(wektor.Length()*36,MatrixRot3x3::Axis::OZ));
+            rotor->RotationRawLocal(MatrixRot3x3(wektor.Length()*12,MatrixRot3x3::Axis::OZ));
         else
-            rotor->RotationRawLocal(MatrixRot3x3(-wektor.Length()*36,MatrixRot3x3::Axis::OZ));
+            rotor->RotationRawLocal(MatrixRot3x3(-wektor.Length()*12,MatrixRot3x3::Axis::OZ));
         
     }
     
@@ -77,9 +77,9 @@ void Drone::RotationRaw(const MatrixRot3x3& macRot)
     {
         rotor->RotationRawGlobal(macRot);
         if(counter++ > 1)
-            rotor->RotationRawLocal(MatrixRot3x3(36,MatrixRot3x3::Axis::OZ));
+            rotor->RotationRawLocal(MatrixRot3x3(120,MatrixRot3x3::Axis::OZ));
         else
-            rotor->RotationRawLocal(MatrixRot3x3(36,MatrixRot3x3::Axis::OZ));
+            rotor->RotationRawLocal(MatrixRot3x3(120,MatrixRot3x3::Axis::OZ));
     }
     
     
@@ -109,6 +109,9 @@ void Drone::ClearCenter()
 
 void Drone::Translation(Vector3D wektor, double speed)
 {
+    if(!wektor)
+        return;
+    
     Animate(
             [this, wektor](double divider)
             {
@@ -121,6 +124,7 @@ void Drone::Rotation(double angle, MatrixRot3x3::Axis axis,  double speed)
 {
     if(!angle)
         return;
+    
     Animate(
             [this, angle, axis](double divider)
             {
@@ -142,7 +146,7 @@ void Drone::Draw()
 
 void Drone::Route(double nr, double angle)
 {
-    constexpr int speed = 100;
+    constexpr int speed = 200;
     
     cout << "Rysuje zaplanowana sciezke lotu..." << endl << endl << endl << endl;
     
@@ -159,6 +163,7 @@ void Drone::Route(double nr, double angle)
     //Obrót
     Rotation(angle, MatrixRot3x3::Axis::OZ, speed);
     //Poruszanie sie
+//    cout << trajectory[2] - trajectory[1] << endl;
     Translation(trajectory[2] - trajectory[1], speed);
     //Opadanie
     Translation(trajectory[3] - trajectory[2] + Vector3D({0,0,body->Height()/2}), speed);
@@ -174,10 +179,10 @@ std::shared_ptr<BrokenLine> Drone::CreateRoute(double nr, double angle)
 {
     std::vector<Vector3D> trajectory;
     //Zrobienie linii
-    trajectory.push_back(Vector3D({0,0,-10}) +  this->LocalCoordCenter());
-    trajectory.push_back(Vector3D({0,0,100}) +  this->LocalCoordCenter());
-    trajectory.push_back(Vector3D({0,static_cast<double>(nr),0}) +  trajectory[1]);
-    trajectory.push_back(Vector3D({0,0,-110}) +  trajectory[2]);
+    trajectory.push_back(Vector3D({0,0,-body->Height()/2}) +  this->LocalCoordCenter());
+    trajectory.push_back(Vector3D({0,0,350}) +  this->LocalCoordCenter());
+    trajectory.push_back(Vector3D({0, static_cast<double>(nr),0}) +  trajectory[1]);
+    trajectory.push_back(Vector3D({0,0,-360}) +  trajectory[2]);
     
     std::shared_ptr<BrokenLine> tr = std::make_shared<BrokenLine>(whereIAm, trajectory);
     Vector3D* test = new Vector3D(this->localCoordCenter);

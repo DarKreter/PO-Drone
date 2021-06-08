@@ -24,8 +24,6 @@ Scene::Scene(float fr) : frequency{fr}
     system("mkdir -p temp");
     
     ZmienTrybRys(PzG::TR_3D);
-    
-    objects.reserve(32);
 }
 
 
@@ -66,35 +64,6 @@ void Scene::AddDrone(const std::shared_ptr<Drone>& drone)
     Draw();
 }
 
-/**
- * Możemy za jego pomocą dostać się do poszczególnych figur.
- * Umożliwa on dostęp do figur, bez możliwości modyfikacji.
- * Gdy indeks jest spoza zakresu [0;ILOŚĆ_BRYŁ] zostanie rzucony wyjątek std::out_of_range
- *
- * @param n - indeks figury do której chcemy uzyskać dostęp
- * @return zwraca referencję do figury którą chcemy zmodyfikować
- */
-const Figure& Scene::operator[](unsigned int n) const
-{
-    if ( n >= size())
-        throw std::out_of_range{"Figure out of range!"};
-    return *(objects[n]);
-}
-
-/**
- * Możemy za jego pomocą dostać się do poszczególnych figur.
- * Umożliwa on modifikację tychże figur.
- * Gdy indeks jest spoza zakresu [0;ILOŚĆ_BRYŁ] zostanie rzucony wyjątek std::out_of_range
- *
- * @param n - indeks figury do której chcemy uzyskać dostęp
- * @return zwraca referencję do figury którą chcemy zmodyfikować
- */
-Figure& Scene::operator[](unsigned int n)
-{
-    if ( n >= size())
-        throw std::out_of_range{"Figure out of range!"};
-    return *(objects[n]);
-}
 
 std::shared_ptr<Drone> Scene::operator()(unsigned int n)
 {
@@ -104,7 +73,7 @@ std::shared_ptr<Drone> Scene::operator()(unsigned int n)
 }
 
 
-bool Scene::AddNewFile(std::string fileName, PzG::RodzajRysowania drawType, int width)
+bool Scene::AddNewFile(const std::string& fileName, PzG::RodzajRysowania drawType, int width)
 {
     system(("touch " + fileName).c_str());
     return DodajNazwePliku(fileName.c_str(), drawType, width);
@@ -112,7 +81,7 @@ bool Scene::AddNewFile(std::string fileName, PzG::RodzajRysowania drawType, int 
 
 void Scene::SetRange(double rangee)
 {
-    range = std::move(rangee);
+    range = rangee;
     UstawZakresX(-range, range);
     UstawZakresY(-range, range);
     UstawZakresZ(0, 2*range);
@@ -125,12 +94,14 @@ Scene::~Scene()
 
 void Scene::RemoveObject(std::size_t n)
 {
-    objects.erase(objects.begin()+n);
+    std::list<std::shared_ptr<Figure>>::iterator it = objects.begin();
+    std::advance(it, n);
+    objects.erase(it);
 
     Draw();
 }
 
-void Scene::RemoveLastFile(std::string fileName)
+void Scene::RemoveLastFile(const std::string& fileName)
 {
     UsunOstatniaNazwe();
     system(("rm -f " + fileName).c_str());

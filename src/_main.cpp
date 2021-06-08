@@ -16,33 +16,46 @@ int main ()
     try
     {
         
-        char znak; uint16_t nr, angle;
-        Scene scene(30);
+        char znak; uint16_t nr; double angle;
+        Scene scene(24);
         std::shared_ptr<Drone> activeDrone = nullptr;
 
     
-        scene.SetRange(100);
+        scene.SetRange(200);
     
         scene.AddObject(std::make_shared<Surface>(&scene, scene.GetRange()));
   
-//        scene.AddObject(std::make_shared<RidgeMountain>(&scene, Vector3D({0, 0, 50}), 100, 20, 100, MatrixRot3x3()));
-        scene.AddObject(std::make_shared<Pyramid>(&scene, Vector3D({0, 0, 0}), 20, 20, 20, MatrixRot3x3()));
+        scene.AddObject(std::make_shared<RidgeMountain>(&scene, Vector3D({-50, 0, 100}),
+                                                        200, 40, 200, MatrixRot3x3(55, MatrixRot3x3::Axis::OZ)));
         
-        std::shared_ptr<Drone> drone = std::make_shared<Drone>(&scene, Vector3D({-10, 50, 10}), 30, 20, 20,
-                                                               MatrixRot3x3(60, MatrixRot3x3::Axis::OZ));
-//        scene.AddDrone(drone);
-        drone = std::make_shared<Drone>(&scene, Vector3D({-80, -20, 10}), 30, 20, 20,
-                                        MatrixRot3x3(-90, MatrixRot3x3::Axis::OZ));
-//        scene.AddDrone(drone);
+        scene.AddObject(std::make_shared<Pyramid>(&scene, Vector3D({-100, 170, 0}),
+                                                  20, 20, 300, MatrixRot3x3(78, MatrixRot3x3::Axis::OZ)));
+    
+        scene.AddObject(std::make_shared<Pyramid>(&scene, Vector3D({-70, -150, 0}),
+                                                  35, 15, 240, MatrixRot3x3()));
         
-//        activeDrone = scene(0);
+        scene.AddObject(std::make_shared<Pyramid>(&scene, Vector3D({-130, -70, 0}),
+                                                  50, 30, 150, MatrixRot3x3(33, MatrixRot3x3::Axis::OZ)));
+    
+        scene.AddObject(std::make_shared<Cuboid>(&scene, Vector3D({100, -105, 40}),
+                                                  70, 140, 80, MatrixRot3x3(15, MatrixRot3x3::Axis::OZ)));
+        
+        std::shared_ptr<Drone> drone = std::make_shared<Drone>(&scene, Vector3D({-150, -150, 10}), 30, 20, 20,
+                                                               MatrixRot3x3(0, MatrixRot3x3::Axis::OZ));
+        scene.AddDrone(drone);
+        
+        drone = std::make_shared<Drone>(&scene, Vector3D({20, 20, 10}), 30, 20, 20,
+                                        MatrixRot3x3(60, MatrixRot3x3::Axis::OZ));
+        scene.AddDrone(drone);
+        
+        activeDrone = scene(0);
         if(system("clear") != 0)
             cout << "Error podczas użycia komendy systemowej!" << endl;
-//        Menu(activeDrone);
+        Menu(activeDrone);
         
         
-        while(true)
-            usleep(1'000'000);
+//        while(true)
+//            usleep(1'000'000);
         
         while (true)
         {

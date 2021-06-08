@@ -14,7 +14,7 @@ template<typename T>
 void Figure::Animate(std::function<void(double)> function, T arg, double speed, double frequency)
 {
     const uint16_t delay = 1000./frequency;//[ms]
-    const double time = arg / (speed / 1000); //[ms]
+    const double time = std::abs(arg / (speed / 1000)); //[ms]
     const double hmt = time / delay;//[ms]
 
     for(uint32_t timeElapsed = 0; timeElapsed<=time; timeElapsed += delay)
