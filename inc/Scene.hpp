@@ -75,7 +75,7 @@ public:
      *
      * @return Rozmiar wektora, przechowującego wszystkie figury
      */
-    [[nodiscard]] std::size_t size() const { return objects.size(); }
+    std::size_t size() const { return objects.size(); }
 
     /**
     * \brief Operator dostępowy do figur na scenie
