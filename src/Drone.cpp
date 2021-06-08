@@ -119,6 +119,8 @@ void Drone::Translation(Vector3D wektor, double speed)
 
 void Drone::Rotation(double angle, MatrixRot3x3::Axis axis,  double speed)
 {
+    if(!angle)
+        return;
     Animate(
             [this, angle, axis](double divider)
             {
@@ -159,7 +161,7 @@ void Drone::Route(double nr, double angle)
     //Poruszanie sie
     Translation(trajectory[2] - trajectory[1], speed);
     //Opadanie
-    Translation(trajectory[3] - trajectory[2], speed);
+    Translation(trajectory[3] - trajectory[2] - Vector3D({0,0,body->Height()/2}), speed);
 
     
     cout << "Dron wyladowal..." << endl << endl << endl << endl;

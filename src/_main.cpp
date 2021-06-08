@@ -19,7 +19,7 @@ int main ()
         std::shared_ptr<Drone> activeDrone = nullptr;
 
     
-        scene.SetRange(500);
+        scene.SetRange(100);
     
         scene.AddObject(std::make_shared<Surface>(&scene, scene.GetRange()));
         
