@@ -37,8 +37,8 @@ void Scene::Draw()
     for(auto& fig: objects)
         fig->Draw();
     
-    for(auto& drone: drones)
-        drone->Draw();
+//    for(auto& drone: drones)
+//        drone->Draw();
     
     Rysuj();
 }
@@ -60,6 +60,7 @@ void Scene::AddObject(const std::shared_ptr<Figure>& object)
 void Scene::AddDrone(const std::shared_ptr<Drone>& drone)
 {
     drones.push_back(drone);
+    objects.push_back(drone);
     
     Draw();
 }
@@ -103,7 +104,7 @@ void Scene::RemoveObject(std::size_t n)
 
 void Scene::RemoveLastFile(const std::string& fileName)
 {
-    UsunOstatniaNazwe();
+//    UsunOstatniaNazwe();
     system(("rm -f " + fileName).c_str());
     system(("touch -f " + fileName).c_str());
 }

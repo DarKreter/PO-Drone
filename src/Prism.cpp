@@ -8,7 +8,7 @@
 
 
 Prism::Prism(Scene *scene, const Vector3D &localCenter, double r, double h, const MatrixRot3x3 &matRot)
-        : Figure(scene, "SomethingWentWrong.jpg", 4, matRot, localCenter), radius{r}, height{h}
+        : Figure(scene, "SomethingWentWrong.jpg", 4, Type::Prism, matRot, localCenter), radius{r}, height{h}
 {}
 
 std::vector<Vector3D>& Prism::CalcLocalCoords(std::vector<Vector3D>& vertices)

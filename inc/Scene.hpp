@@ -50,6 +50,8 @@ public:
     void SetRange(double rangee);
     double GetRange() {return range;}
     
+    std::list<std::shared_ptr<Figure>>& Objects() { return objects; }
+    
     /**
      * @brief Odświeżenie obszaru roboczego programu gnuplot
      */

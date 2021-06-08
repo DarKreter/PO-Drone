@@ -8,7 +8,7 @@
 
 
 BrokenLine::BrokenLine(Scene *scene, std::vector<Vector3D> p)
-        : Figure(scene, "SomethingWentWrong.jpg", 128, MatrixRot3x3(), Vector3D()), points{std::move(p)}
+        : Figure(scene, "SomethingWentWrong.jpg", 128, Type::BrokenLine, MatrixRot3x3(), Vector3D()), points{std::move(p)}
 {}
 
 

@@ -18,6 +18,20 @@ class Scene;
 
 class Figure
 {
+public:
+    enum class Type
+    {
+        Figure = 0,
+        Cuboid,
+        Prism,
+        BrokenLine,
+        Plateau,
+        Drone,
+        Pyramid,
+        RidgeMountain,
+        Surface
+    }whoIAm;
+    
 protected:
     std::string fileName;
     uint8_t fileNewLine;
@@ -30,8 +44,8 @@ protected:
     
     static std::uint16_t count;
     
-    explicit Figure(Scene* scene, std::string fn, uint8_t fnl, const MatrixRot3x3 &matRot,
-                    Vector3D localCenter, Vector3D* rotationCentr = nullptr);
+    explicit Figure(Scene *scene, std::string fn, uint8_t fnl, Type tt, const MatrixRot3x3 &matRot,
+                    Vector3D localCenter, Vector3D *rotationCentr = nullptr);
     
     template<typename T>
     void Animate(std::function<void(double)>function, T arg, double speed, double frequency);
@@ -42,6 +56,7 @@ protected:
     bool nested = false;
     
 public:
+    
     //Przeliczyć je na układ globalny (mnożenie przez macierz plus translacja o środek)
     void CalcGlobalCoords(std::vector<Vector3D>& vertices);
     
@@ -60,9 +75,12 @@ public:
     void SetScene(Scene*s) {whereIAm = s;}
     void Nested() { nested = true; }
     Vector3D LocalCoordCenter() { return localCoordCenter; }
+    Vector<2> BaseCenter() { return Vector<2>({localCoordCenter[0], localCoordCenter[1]}); }
     MatrixRot3x3 GlobalOrientation() { return globalOrientation; }
     void RotationCenter(Vector3D* w) {rotationCenter = w;}
     void ClearRotationCenter() {rotationCenter = &localCoordCenter;}
+    Type WhoIAm() { return whoIAm; }
+    std::string WhoIAmText();
 
     ~Figure();
 };

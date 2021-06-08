@@ -181,21 +181,7 @@ std::istream& operator >> (std::istream& strm, Vector<SIZE>& wek)
 	return strm;
 }
 
-/**
- * Wypisanie wektora na odpowiedni strumień
- *
- * @param strm - strumien na który ma zostać wypisany wektor
- * @param wek - wektor który ma zostać wypisany
- * @return zwracamy referencję do przysłanego strumienia
- */
-template <size_t SIZE>
-std::ostream& operator << (std::ostream& strm, const Vector<SIZE>& wek)
-{
-	for (uint16_t i = 0; i < SIZE; ++i)
-		strm << std::setw(16) << std::fixed << std::setprecision(8) << wek[i] << (i == SIZE - 1 ? " " : "");
 
-	return strm;
-}
 
 template<std::size_t SIZE>
 int Vector<SIZE>::HowManyVectorsNow()

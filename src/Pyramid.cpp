@@ -8,7 +8,7 @@
 
 
 Pyramid::Pyramid(Scene *scene, const Vector3D &localCenter, double w, double l, double h, const MatrixRot3x3 &matRot, Vector3D* rotCen)
-        : Figure(scene, "SomethingWentWrong.jpg", 4, matRot, localCenter, rotCen), width{w}, length{l}, height{h}
+        : Figure(scene, "SomethingWentWrong.jpg", 4, Type::Pyramid, matRot, localCenter, rotCen), width{w}, length{l}, height{h}
 {}
 
 

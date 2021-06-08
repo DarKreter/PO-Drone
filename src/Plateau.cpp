@@ -1,4 +1,8 @@
-#include <Cuboid.hpp>
+//
+// Created by darkr on 08.06.2021.
+//
+
+#include "../inc/Plateau.hpp"
 #include <fstream>
 #include <vector>
 
@@ -14,12 +18,12 @@
  * @param name - nazwa pliku który zostanie otworzony i zostaną z niego
  * wczytane wszystkie wierzchołki
  */
-Cuboid::Cuboid(Scene *scene, const Vector3D &localCenter, double w, double l, double h, const MatrixRot3x3 &matRot, Vector3D* rotCen)
-    : Figure(scene, "SomethingWentWrong.jpg", 4, Type::Cuboid, matRot, localCenter, rotCen), width{w}, length{l}, height{h}
+Plateau::Plateau(Scene *scene, const Vector3D &localCenter, double w, double l, double h, const MatrixRot3x3 &matRot, Vector3D* rotCen)
+        : Figure(scene, "SomethingWentWrong.jpg", 4, Type::Plateau, matRot, localCenter, rotCen), width{w}, length{l}, height{h}
 {}
 
 
-std::vector<Vector3D>& Cuboid::CalcLocalCoords(std::vector<Vector3D>& vertices)
+std::vector<Vector3D>& Plateau::CalcLocalCoords(std::vector<Vector3D>& vertices)
 {
     
     double halfWidth = width/2., halfHeight = height/2., halfLength = length/2.;
@@ -44,10 +48,10 @@ std::vector<Vector3D>& Cuboid::CalcLocalCoords(std::vector<Vector3D>& vertices)
             else
             {
                 if(i < 2 || i ==4)
-                    vertex[2] = halfHeight;
+                    vertex[2] = height;
                 else
-                    vertex[2] = -halfHeight;
-               
+                    vertex[2] = 0;
+                
                 if(i == 1 || i == 2)
                     vertex[0] = halfLength;
                 else

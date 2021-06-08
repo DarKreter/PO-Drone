@@ -18,7 +18,7 @@ std::vector<Vector3D>& Drone::CalcLocalCoords(std::vector<Vector3D>& vertices)
 
 
 Drone::Drone(Scene* scene, const Vector3D &localCenter, double wid, double len, double hei, const MatrixRot3x3 &matRot)
-        : Figure(scene, "SomethingWentWrong.jpg", 4, matRot, localCenter)
+        : Figure(scene, "SomethingWentWrong.jpg", 4, Type::Drone, matRot, localCenter)
         
 {
     

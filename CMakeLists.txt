@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 add_library(Gnuplot ./src/Gnuplot.cpp ./inc/Gnuplot.hpp)
 target_include_directories(Gnuplot PUBLIC ./inc ./src)
 
-add_library(Vector inc/Vector.hpp fml/Vector.tpp src/empty.cpp)
+add_library(Vector inc/Vector.hpp fml/Vector.tpp src/Vector.cpp)
 target_include_directories(Vector PUBLIC ./inc ./src ./fml)
 
 add_library(Matrix src/MatrixRot.cpp)
@@ -41,6 +41,10 @@ add_library(Pyramid src/Pyramid.cpp inc/Pyramid.hpp)
 target_link_libraries(Pyramid Figure)
 target_include_directories(Pyramid PUBLIC ./inc ./src)
 
+add_library(Plateau src/Plateau.cpp inc/Plateau.hpp)
+target_link_libraries(Plateau Figure)
+target_include_directories(Plateau PUBLIC ./inc ./src)
+
 add_library(Drone src/Drone.cpp inc/Drone.hpp)
 target_link_libraries(Drone Figure Cuboid Prism BrokenLine)
 target_include_directories(Drone PUBLIC ./inc ./src)
@@ -49,7 +53,7 @@ add_library(Scene src/Scene.cpp inc/Scene.hpp)
 target_link_libraries(Scene Cuboid Gnuplot)
 target_include_directories(Scene PUBLIC ./inc ./src)
 
-set(LIBS Gnuplot Vector Matrix Cuboid Figure Scene Prism Surface BrokenLine RidgeMountain Pyramid Drone)
+set(LIBS Gnuplot Vector Matrix Cuboid Figure Scene Prism Surface BrokenLine RidgeMountain Pyramid Plateau Drone)
 set(Compile_Flags -Wall -Wextra -pedantic -O3)
 
 #set(CMAKE_CXX_FLAGS -pthread)

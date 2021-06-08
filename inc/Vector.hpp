@@ -121,6 +121,7 @@ std::istream& operator >> (std::istream&, Vector<SIZE>&);
 template <size_t SIZE>
 std::ostream& operator << (std::ostream&, const Vector<SIZE>&);
 
+
 #include "Vector.tpp"
 
 #endif

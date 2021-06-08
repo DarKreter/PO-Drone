@@ -7,7 +7,7 @@
 
 
 Surface::Surface(Scene *scene, double r)
-        : Figure(scene, "SomethingWentWrong.jpg", 0, MatrixRot3x3(), Vector3D()), range{r}, level{0}
+        : Figure(scene, "SomethingWentWrong.jpg", 0, Type::Surface, MatrixRot3x3(), Vector3D()), range{r}, level{0}
 {}
 
 void Surface::Draw()

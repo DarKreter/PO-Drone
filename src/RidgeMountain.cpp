@@ -8,7 +8,7 @@
 
 
 RidgeMountain::RidgeMountain(Scene *scene, const Vector3D &localCenter, double w, double l, double h, const MatrixRot3x3 &matRot, Vector3D* rotCen)
-        : Figure(scene, "SomethingWentWrong.jpg", 4, matRot, localCenter, rotCen), width{w}, length{l}, height{h}
+        : Figure(scene, "SomethingWentWrong.jpg", 4, Type::RidgeMountain, matRot, localCenter, rotCen), width{w}, length{l}, height{h}
 {}
 
 
@@ -35,9 +35,9 @@ std::vector<Vector3D>& RidgeMountain::CalcLocalCoords(std::vector<Vector3D>& ver
             else
             {
                 if(i < 2 || i ==4)
-                    vertex[2] = halfHeight;
+                    vertex[2] = height;
                 else
-                    vertex[2] = -halfHeight;
+                    vertex[2] = 0;
 
                 if(i == 3)
                     vertex[0] = -halfLength;
