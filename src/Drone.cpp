@@ -161,7 +161,7 @@ void Drone::Route(double nr, double angle)
     //Poruszanie sie
     Translation(trajectory[2] - trajectory[1], speed);
     //Opadanie
-    Translation(trajectory[3] - trajectory[2] - Vector3D({0,0,body->Height()/2}), speed);
+    Translation(trajectory[3] - trajectory[2] + Vector3D({0,0,body->Height()/2}), speed);
 
     
     cout << "Dron wyladowal..." << endl << endl << endl << endl;
