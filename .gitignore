@@ -1,4 +1,5 @@
 .idea/
+dox/
 cmake-build*/
 *.png
 *.skp
