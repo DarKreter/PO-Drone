@@ -5,10 +5,19 @@
 #define FIGURE_TPP
 #include<Figure.hpp>
 
-/*
- * Wymagania:
- * FunPtr służy do pokazywania w klasie Figure ale jest override w klasie dziedzicznej
- * T zapewnia dzielenie przez double oraz ma funkcje składową .Lenght()
+/**
+ * @file
+ * @brief Definicja szablonów klasy Figure
+ */
+
+/**
+ * Funkcja animująca poszczególne ruchy drona
+ *
+ * @tparam T - Typ argumentu przekazywanego do funkcji - musi być rzutowalny na typ double
+ * @param function - Funkcja która wykonuje poszczególne ruchy - jest wywoływana wielokrotnie w pętli
+ * @param arg - argument na którego podstawie określamy co jest do przebycia
+ * @param speed - prędkość animacji
+ * @param frequency - ilość klatek na sekunde
  */
 template<typename T>
 void Figure::Animate(std::function<void(double)> function, T arg, double speed, double frequency)

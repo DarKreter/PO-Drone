@@ -6,8 +6,25 @@
 #include "Figure.hpp"
 #include "Scene.hpp"
 
+/**
+ * @file
+ * @brief
+ * Definicja funkcji klasy Figure
+ */
+
 std::uint16_t Figure::count = 0;
 
+/**
+ * Nadanie wartości przysłanych wszystkim składnikom i stworzenie nowego pliku na dysku dla tego obiektu
+ *
+ * @param scene - scena w której znajduje się ten obiekt
+ * @param fn - nazwa pliku dla tego obiektu
+ * @param fnl - Ilość linii po których wystąpi dodatkowy enter
+ * @param tt - typ wyliczeniowy jakiego rodzaju to obiekt
+ * @param matRot - macierz rotacji lokalna
+ * @param localCenter - wektor polozenia srodka figury
+ * @param rotationCentr - wektor polozenia punktu obrotu globalnego wskaznik
+ */
 Figure::Figure(Scene *scene, std::string fn, uint8_t fnl, Type tt, const MatrixRot3x3 &matRot, Vector3D localCenter,
                Vector3D *rotationCentr)
         : fileName{std::move(fn)}, fileNewLine{fnl},
@@ -20,6 +37,11 @@ Figure::Figure(Scene *scene, std::string fn, uint8_t fnl, Type tt, const MatrixR
         rotationCenter = &localCoordCenter;
 }
 
+/**
+ * Przelicza wektor wierzcholkow ktore sa stworzone lokalnie na globalna postac
+ *
+ * @param vertices - wektor wierzcholkow przyslanych przez oryginal
+ */
 void Figure::CalcGlobalCoords(std::vector<Vector3D>& vertices)
 {
     for(auto& vertex: vertices)
@@ -27,6 +49,9 @@ void Figure::CalcGlobalCoords(std::vector<Vector3D>& vertices)
     
 }
 
+/**
+ * Przeliczenie wszystkich wierzcholkow i wpisanie ich do pliku z dobra kolejnoscia
+ */
 void Figure::Draw()
 {
     std::vector<Vector3D> vertices;
@@ -44,6 +69,11 @@ void Figure::Draw()
     str.close();;
 }
 
+/**
+ * Przesuniecie o wektor bez animacji
+ *
+ * @param wektor - wektor translacji
+ */
 void Figure::TranslationRaw(const Vector3D &wektor)
 {
     localCoordCenter = localCoordCenter + wektor;
@@ -51,6 +81,11 @@ void Figure::TranslationRaw(const Vector3D &wektor)
         whereIAm->Draw();
 }
 
+/**
+ * Obrot lokalny o zadana macierz rotacji
+ *
+ * @param macRot - macierz rotacji o ktora obracamy
+ */
 void Figure::RotationRawLocal(const MatrixRot3x3& macRot)
 {
     localOrientation = macRot * localOrientation;
@@ -59,6 +94,11 @@ void Figure::RotationRawLocal(const MatrixRot3x3& macRot)
         whereIAm->Draw();
 }
 
+/**
+ * obrot globalny o zadana macierz rotacji
+ *
+ * @param macRot - macierz rotacji o ktora obracamy
+ */
 void Figure::RotationRawGlobal(const MatrixRot3x3& macRot)
 {
     globalOrientation = macRot * globalOrientation;
@@ -67,6 +107,12 @@ void Figure::RotationRawGlobal(const MatrixRot3x3& macRot)
         whereIAm->Draw();
 }
 
+/**
+ * Przesuniecie o zadany wektor animujac ruch z zadana predkoscia
+ *
+ * @param wektor - wektor translacji
+ * @param speed - predkosc podana w jednostkach na sekunde
+ */
 void Figure::Translation(Vector3D wektor, double speed)
 {
     Animate(
@@ -77,6 +123,13 @@ void Figure::Translation(Vector3D wektor, double speed)
             wektor, speed, whereIAm->Frequency());
 }
 
+/**
+ * Rotacja wokol wlasnego srodka
+ *
+ * @param angle - kat o jaki obracamy
+ * @param axis - os wokol ktorej obracamy
+ * @param speed - predkosc w stopniach na sekunde
+ */
 void Figure::RotationLocal(double angle, MatrixRot3x3::Axis axis,  double speed)
 {
     Animate(
@@ -87,7 +140,13 @@ void Figure::RotationLocal(double angle, MatrixRot3x3::Axis axis,  double speed)
             angle, speed, whereIAm->Frequency());
 }
 
-
+/**
+ * Rotacja wokol zadanego punktu srodka
+ *
+ * @param angle - kat o jaki obracamy
+ * @param axis - os wokol ktorej obracamy
+ * @param speed - predkosc w stopniach na sekunde
+ */
 void Figure::RotationGlobal(double angle, MatrixRot3x3::Axis axis,  double speed)
 {
     Animate(
@@ -98,6 +157,11 @@ void Figure::RotationGlobal(double angle, MatrixRot3x3::Axis axis,  double speed
             angle, speed, whereIAm->Frequency());
 }
 
+/**
+ * Zwraca ciag znakowy okreslajacy co to za figura
+ *
+ * @return ciag znakowy
+ */
 std::string Figure::WhoIAmText()
 {
     switch(whoIAm)
@@ -128,6 +192,9 @@ std::string Figure::WhoIAmText()
     }
 }
 
+/**
+ * Usuwa plik tej figury
+ */
 Figure::~Figure()
 {
     whereIAm->RemoveLastFile(fileName);

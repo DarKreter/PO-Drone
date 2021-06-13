@@ -8,17 +8,29 @@
  * @brief Definicje funkcji składowych klasy Cuboid
  */
 
+
 /**
- * Wszystkie wierzchołki zostają wczytane bezpośrednio z pliku.
+ *  Stworzenie prostopadłościanu na podstawie przyslanych danych
  *
- * @param name - nazwa pliku który zostanie otworzony i zostaną z niego
- * wczytane wszystkie wierzchołki
+ * @param scene - scena gdzie jest Cuboid
+ * @param localCenter - srodek bryły
+ * @param w - szerokosc
+ * @param l - dlugosc
+ * @param h - wysokosc
+ * @param matRot - macierz rotacji wokół której obracamy lokalnie bryły
+ * @param rotCen - środek rotacji
  */
 Cuboid::Cuboid(Scene *scene, const Vector3D &localCenter, double w, double l, double h, const MatrixRot3x3 &matRot, Vector3D* rotCen)
     : Figure(scene, "SomethingWentWrong.jpg", 4, Type::Cuboid, matRot, localCenter, rotCen), width{w}, length{l}, height{h}
 {}
 
 
+/**
+ * Przeliczanie wierzchołków z środka i boków
+ *
+ * @param vertices - wierzchołki gdzie zapiszemy wszystkie wyliczone wierzchołki
+ * @return - wyliczone wierzchołki
+ */
 std::vector<Vector3D>& Cuboid::CalcLocalCoords(std::vector<Vector3D>& vertices)
 {
     

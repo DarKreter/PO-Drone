@@ -9,27 +9,37 @@
 #include <Vector.hpp>
 #include "MatrixRot.hpp"
 #include "Figure.hpp"
+/**
+ * @file
+ * @brief Definicja klasy Plateau
+ */
 
-
+/**
+ * @brief Modeluje pojecie plaskowyzu
+ */
 class Plateau: public Figure
 {
     /**
-     * \brief Tablica przechowująca 8 wierzchołków prostopadłościanu
-     *
-     * Prostopadłościan jest zlokalizowany w przestrzeni 3D
-     * Pojedyńczy punkt jest zmodelowany za pomocą klasy Vector3D
+     * @brief dlugosc, szerokosc oraz wysokosc plaskowyzu
      */
     double width, length, height;
 
 public:
     /**
-     * \brief Inicjalizuje wierzchołki prostopadłościanu, na podstawie danych z pliku.
+     * @brief konstruuje plaskowyz zadanymi wartosciami
      */
     explicit Plateau(Scene *scene, const Vector3D &localCenter, double w, double l, double h,
     const MatrixRot3x3 &matRot, Vector3D* rotCen = nullptr);
     
+    /**
+     * @brief Przelicza wszystkie wierzcholki na podstawie srodka i dlugosci bokow
+     */
     std::vector<Vector3D>& CalcLocalCoords(std::vector<Vector3D>&) override;
     
+    /**
+     * @brief Funkcja dostepowa do wysokosci
+     * @return Zwraca wysokosc
+     */
     double Height() {return height;}
     
 };

@@ -9,20 +9,30 @@
 
 /**
  * @file
- * @brief Definicje funkcji składowych klasy Cuboid
+ * @brief Definicje funkcji składowych klasy Plateau
  */
 
 /**
- * Wszystkie wierzchołki zostają wczytane bezpośrednio z pliku.
+ * Konstruuje płaskowyż na podstawie przysłanych danych
  *
- * @param name - nazwa pliku który zostanie otworzony i zostaną z niego
- * wczytane wszystkie wierzchołki
+ * @param scene - scena w której znajduje się dana bryła
+ * @param localCenter - środek tej bryły
+ * @param w - szerokość
+ * @param l - długość
+ * @param h - wysokość
+ * @param matRot - Macierz rotacji lokalna wokół której orientujemy bryłe
+ * @param rotCen - środek wokół którego robimy obrót globalny
  */
 Plateau::Plateau(Scene *scene, const Vector3D &localCenter, double w, double l, double h, const MatrixRot3x3 &matRot, Vector3D* rotCen)
         : Figure(scene, "SomethingWentWrong.jpg", 4, Type::Plateau, matRot, localCenter, rotCen), width{w}, length{l}, height{h}
 {}
 
-
+/**
+ * Przeliczenie wierzchołków lokalnych
+ *
+ * @param vertices - wektor gdzie zapiszemy wierzchołki
+ * @return - przeliczone wierzchołki
+ */
 std::vector<Vector3D>& Plateau::CalcLocalCoords(std::vector<Vector3D>& vertices)
 {
     

@@ -10,18 +10,30 @@
 #include "MatrixRot.hpp"
 #include "Figure.hpp"
 
+/**
+ * @file
+ * @brief Definicja klasy Prism
+ */
 
-
+/**
+ * @brief Modeluje pojecie graniastoslupa
+ */
 class Prism: public Figure
 {
+    /**
+     * @brief Przechowuja dlugosc promienia i wysokosc granistoslupa
+     */
     double radius, height;
     
 public:
     /**
-     * \brief Inicjalizuje wierzchołki prostopadłościanu, na podstawie danych z pliku.
+     * \brief Inicjalizuje wielkosci granistoslupa na podstawie przyslanych
      */
     explicit Prism(Scene *scene, const Vector3D &localCenter, double r, double h, const MatrixRot3x3 &matRot = MatrixRot3x3());
     
+    /**
+     * @brief Przelicza wierzcholki z pliku na podstawie srodka promienia i wysokosci
+     */
     std::vector<Vector3D>& CalcLocalCoords(std::vector<Vector3D>&) override;
 };
 

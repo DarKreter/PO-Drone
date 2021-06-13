@@ -4,13 +4,32 @@
 
 #include "Prism.hpp"
 #include <vector>
+/**
+ * @file
+ * @brief Definicje funkcji składowych klasy Prism
+ */
 
+/**
+ * Konstruuje obiekt na podstawie przyslanych danych
+ *
+ * @param scene - wskaznik na scene w ktorej znajduje sie obiekt
+ * @param localCenter - lokalny srodek bryły
+ * @param r - promień graniastosłupa
+ * @param h - wysokość
+ * @param matRot - orientacja bryły w postaci macierzy rotacji
+ */
 
 
 Prism::Prism(Scene *scene, const Vector3D &localCenter, double r, double h, const MatrixRot3x3 &matRot)
         : Figure(scene, "SomethingWentWrong.jpg", 4, Type::Prism, matRot, localCenter), radius{r}, height{h}
 {}
 
+/**
+ * Obliczenie lokalnych wierzchołków
+ *
+ * @param vertices - Wektor gdzie zapisujemy wszystkie wierzchołki
+ * @return - zwracamy przeliczone wierzchołki
+ */
 std::vector<Vector3D>& Prism::CalcLocalCoords(std::vector<Vector3D>& vertices)
 {
     double halfHeight = height/2;

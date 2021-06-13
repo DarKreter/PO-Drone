@@ -29,27 +29,56 @@ class Scene
      * Może ich od 1 do bardzo dużej ilości ograniczoną pamięcią urządzenia.
      */
     std::list<std::shared_ptr<Figure>> objects;
+    /**
+     * @brief Wektor przechowujacy drony aktualnie bedace na scenie
+     */
     std::vector<std::shared_ptr<Drone>> drones;
     
+    /**
+     * @brief Zasieg sceny
+     */
     double range;
     
+    /**
+     * @brief Czestotliwosc animacji
+     */
     const float frequency;
     
 public:
+    /**
+     * @brief Dodanie nowego pliku do gnuplota
+     */
     bool AddNewFile(const std::string& fileName, PzG::RodzajRysowania drawType = PzG::RR_Ciagly, int width = 2);
+    /**
+     * @brief usuniecie ostatniego pliku z gnuplota
+     */
     void RemoveLastFile(const std::string& fileName);
     
-    
+    /**
+     * @brief Dostep do wartosci czestotliwosci
+     * @return czestotliwosc animacji sceny
+     */
     double Frequency() const { return frequency; }
     
     /*
-     * @brief Inicjalizuje scene za pomocą zakresu wartości na osiach.
+     * @brief Inicjalizuje scene za pomocą czestotliwosci animacji
      */
     Scene(float fr = 60);
     
+    /**
+     * @brief Ustawia zasieg sceny w przestrzeni
+     */
     void SetRange(double rangee);
+    /**
+     * @brief Dostep do zasiegu sceny
+     * @return Zasieg sceny
+     */
     double GetRange() {return range;}
     
+    /**
+     * @brief Funkcja dostepowa do obiektow
+     * @return Lista obiektow
+     */
     std::list<std::shared_ptr<Figure>>& Objects() { return objects; }
     
     /**
@@ -63,7 +92,7 @@ public:
     void AddObject(const std::shared_ptr<Figure>& object);
     
     /**
-     * @brief Dodanie nowej figury
+     * @brief usuniecie nowej figury
      */
     void RemoveObject(std::size_t n);
     
@@ -81,7 +110,7 @@ public:
     
     
     /**
-    * \brief Operator dostępowy do figur na scenie
+    * \brief Operator dostępowy do dronow na scenie
     */
     std::shared_ptr<Drone> operator()(unsigned int n);
     

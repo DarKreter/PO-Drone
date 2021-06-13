@@ -16,15 +16,12 @@
 /**
  * \brief Modeluje pojęcie Prostopadłościanu
  *
- * Przechowuje 8 wierzchołków prostopadłościanu w tablicy.
- * Dostarcza narzędzia do przesuwania go w przestrzeni o wektor
- * oraz obrót o zadany kąt względem danej osi układu współrzędnych.
- * Pozwala także na wygodne wypisanie i wczytanie go ze strumienia standardowego.
+ * przechowuje wysokosc dlugosc i szerokosc
  */
 class Cuboid: public Figure
 {
     /**
-     * \brief Tablica przechowująca 8 wierzchołków prostopadłościanu
+     * zmienne okreslajace wymiary prostopadloscianu
      *
      * Prostopadłościan jest zlokalizowany w przestrzeni 3D
      * Pojedyńczy punkt jest zmodelowany za pomocą klasy Vector3D
@@ -33,13 +30,20 @@ class Cuboid: public Figure
 
 public:
     /**
-     * \brief Inicjalizuje wierzchołki prostopadłościanu, na podstawie danych z pliku.
+     * \brief Inicjalizuje wierzchołki prostopadłościanu, na danych wstepnych
      */
     explicit Cuboid(Scene *scene, const Vector3D &localCenter, double w, double l, double h,
                     const MatrixRot3x3 &matRot, Vector3D* rotCen = nullptr);
     
+    /**
+     * @brief Przelicza wierzcholki z formy srodka na lokalna
+     */
     std::vector<Vector3D>& CalcLocalCoords(std::vector<Vector3D>&) override;
     
+    /**
+     * @brief Funkcja dostepowa do wysokosci
+     * @return zwraca wysokosc
+     */
     double Height() {return height;}
     
 };

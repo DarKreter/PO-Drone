@@ -4,12 +4,24 @@
 
 #include "Surface.hpp"
 #include <fstream>
+/**
+ * @file
+ * @brief Definicje składowych funkcji klasy Surface
+ */
 
-
+/**
+ * Tworzy obiekt klasy Surface
+ *
+ * @param scene - Scena w której aktualnie znajduje się płaszczyzna
+ * @param r - zasięg płaszczyzny
+ */
 Surface::Surface(Scene *scene, double r)
         : Figure(scene, "SomethingWentWrong.jpg", 0, Type::Surface, MatrixRot3x3(), Vector3D()), range{r}, level{0}
 {}
 
+/**
+ * Wpisaniue odpowiednich wierzchołków do pliku tak aby dało się narysować płaszczyznę
+ */
 void Surface::Draw()
 {
     std::ofstream str(fileName);
