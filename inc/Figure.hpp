@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <Vector.hpp>
 #include <MatrixRot.hpp>
+#include <Rectangle.hpp>
 #include <vector>
 #include <functional>
 #include <memory>
@@ -104,6 +105,10 @@ protected:
     bool nested = false;
     
 public:
+    /**
+     * @brief Zwraca rzut figury na oś OXY
+     */
+    virtual Rectangle OXYprojection();
     
     /**
      * @brief Funkcja przeliczajaca wektor punktow lokalnych na globalny uklad wspolrzednych

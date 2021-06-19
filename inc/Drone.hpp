@@ -81,6 +81,15 @@ public:
      * @brief czysci srodki elementow do obracania
      */
     void ClearCenter();
+    /**
+     * @brief Zwraca rzut figury na oś OXY
+     */
+    Rectangle OXYprojection() override;
+    
+    /**
+     * @brief check if there is collision with anything from scene
+     */
+    std::string Collision();
 };
 
 

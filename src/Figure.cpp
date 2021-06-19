@@ -66,7 +66,7 @@ void Figure::Draw()
         str << vertex << std::endl << (i%fileNewLine==(fileNewLine-1)?"\n":"");
         i++;
     }
-    str.close();;
+    str.close();
 }
 
 /**
@@ -181,7 +181,7 @@ std::string Figure::WhoIAmText()
 //        return "RidgeMountain";
         return "Gora z dluga grania";
     case Type::Drone:
-        return "Drone";
+        return "Dron";
     case Type::Pyramid:
 //        return "Pyramid";
         return "Gora z ostrym szczytem";
@@ -198,5 +198,35 @@ std::string Figure::WhoIAmText()
 Figure::~Figure()
 {
     whereIAm->RemoveLastFile(fileName);
+}
+
+/**
+ * Zwraca rzut figury w formie uproszczonej jako prostokąt który ma boki
+ * równoległe do osi OX i OY
+ *
+ * @return - Prostokąt który jest rzutem na płaszczyzne OXY
+ */
+Rectangle Figure::OXYprojection()
+{
+    std::vector<Vector3D> vertices;
+    vertices.reserve(32);
+    
+    CalcGlobalCoords(CalcLocalCoords(vertices));
+    double x1 = 999999, x2 = -999999, y1 = 999999, y2 = -9999999;
+    
+    for(const auto& vertex: vertices)
+    {
+        if(vertex[0] > x2)
+            x2 = vertex[0];
+        if(vertex[0] < x1)
+            x1 = vertex[0];
+        
+        if(vertex[1] > y2)
+            y2 = vertex[1];
+        if(vertex[1] < y1)
+            y1 = vertex[1];
+    }
+    
+    return Rectangle(x1,x2,y1,y2);
 }
 

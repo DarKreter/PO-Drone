@@ -21,6 +21,10 @@ add_library(Prism src/Prism.cpp inc/Prism.hpp)
 target_link_libraries(Prism Figure)
 target_include_directories(Prism PUBLIC ./inc ./src)
 
+add_library(Rectangle src/Rectangle.cpp inc/Rectangle.hpp)
+target_link_libraries(Rectangle Vector)
+target_include_directories(Rectangle PUBLIC ./inc ./src)
+
 add_library(Cuboid src/Cuboid.cpp inc/Cuboid.hpp)
 target_link_libraries(Cuboid Figure)
 target_include_directories(Cuboid PUBLIC ./inc ./src)
@@ -53,7 +57,7 @@ add_library(Scene src/Scene.cpp inc/Scene.hpp)
 target_link_libraries(Scene Cuboid Gnuplot)
 target_include_directories(Scene PUBLIC ./inc ./src)
 
-set(LIBS Gnuplot Vector Matrix Cuboid Figure Scene Prism Surface BrokenLine RidgeMountain Pyramid Plateau Drone)
+set(LIBS Gnuplot Vector Matrix Cuboid Figure Scene Prism Surface BrokenLine RidgeMountain Pyramid Plateau Drone Rectangle)
 set(Compile_Flags -Wall -Wextra -pedantic -O3)
 
 #set(CMAKE_CXX_FLAGS -pthread)

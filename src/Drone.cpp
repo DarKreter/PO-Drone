@@ -205,10 +205,9 @@ void Drone::Route(double nr, double angle)
     
     cout << "Rysuje zaplanowana sciezke lotu..." << endl << endl << endl << endl;
     
-    std::vector<Vector3D> trajectory;
+    std::vector<Vector3D> trajectory, siema;
     std::shared_ptr<BrokenLine> route = CreateRoute(nr, angle);
     route->CalcGlobalCoords(route->CalcLocalCoords(trajectory));
-    
     
     cout << "Realizacja przelotu..." << endl << endl << endl << endl;
  
@@ -220,6 +219,35 @@ void Drone::Route(double nr, double angle)
     //Poruszanie sie
 //    cout << trajectory[2] - trajectory[1] << endl;
     Translation(trajectory[2] - trajectory[1], speed);
+    
+    std::string what = Collision();
+    while(what != "")
+    {
+        Vector3D temp = (trajectory[2] - trajectory[1])*0.5;//  double a = temp[1] / temp[0], length = 50;
+//        Vector3D additionalRoute = Vector3D({length / pow(1 + a, 0.5),a * length / pow(1 + a, 0.5), 0});
+        std::cout << "Ladowisko niedostepne!\nWykryto element powierzchni typu: " << what << "\n\n\n"
+        << "Lot zostal wydluzony.\nPoszukiwanie wolnego ladowiska\n\n\n";
+        
+        
+        //biore broken line
+        auto tEmP = whereIAm->Objects().end();
+        shared_ptr<BrokenLine> trasa = dynamic_pointer_cast<BrokenLine>(*(--tEmP));
+        
+        //zmieniam wspolrzedne
+        trasa->points[2] = trasa->points[2] + Vector3D({0, (temp).Length(),0});
+        trasa->points[3] = trasa->points[3] + Vector3D({0, temp.Length(),0});
+        
+        //rysuje
+        whereIAm->Draw();
+        
+        
+        usleep(2'000'000);
+        Translation(temp, speed);
+        
+        what = Collision();
+    }
+    std::cout << "Ladowisko dostepne!\nRozpoczecie procedury ladowania.\n\n\n";
+    
     //Opadanie
     Translation(trajectory[3] - trajectory[2] + Vector3D({0,0,body->Height()/2}), speed);
 
@@ -255,3 +283,34 @@ std::shared_ptr<BrokenLine> Drone::CreateRoute(double nr, double angle)
     
     return tr;
 }
+
+/**
+ * Zwraca rzut figury w formie uproszczonej jako prostokąt który ma boki
+ * równoległe do osi OX i OY
+ *
+ * @return - Prostokąt który jest rzutem na płaszczyzne OXY
+ */
+Rectangle Drone::OXYprojection()
+{
+    return body->OXYprojection();
+}
+
+ /**
+  * @brief check if there is collision with anything from scene
+  * @return true if there is collision, false if not
+  */
+ std::string Drone::Collision()
+ {
+    std::string a = "";
+    for(auto& object: whereIAm->Objects())
+        if(object->WhoIAm() != Figure::Type::BrokenLine && object->WhoIAm() != Figure::Type::Surface &&
+                    this != object.get() && (object->OXYprojection() | OXYprojection()) )
+        {
+            
+            a = object->WhoIAmText();
+            break;
+        }
+    
+    
+    return a;
+ }

@@ -1,12 +1,11 @@
 #include <Scene.hpp>
 #include <Cuboid.hpp>
-#include <Prism.hpp>
 #include <Surface.hpp>
-#include <BrokenLine.hpp>
 #include <Drone.hpp>
 #include <RidgeMountain.hpp>
 #include <Pyramid.hpp>
 #include <Plateau.hpp>
+#include <Rectangle.hpp>
 
 using namespace std;
 void Menu(std::shared_ptr<Drone> activeDrone);
@@ -50,7 +49,7 @@ int main ()
         scene.AddObject(std::make_shared<Pyramid>(&scene, Vector3D({-130, -70, 0}),
                                                   50, 30, 150, MatrixRot3x3(33, MatrixRot3x3::Axis::OZ)));
     
-        scene.AddObject(std::make_shared<Plateau>(&scene, Vector3D({100, -105, 40}),
+        scene.AddObject(std::make_shared<Plateau>(&scene, Vector3D({100, -105, 0}),
                                                   70, 140, 80, MatrixRot3x3(15, MatrixRot3x3::Axis::OZ)));
         
         

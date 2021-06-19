@@ -10,6 +10,7 @@
 #include "MatrixRot.hpp"
 #include "Figure.hpp"
 
+class Drone;
 /**
  * @file
  * @brief Definicja klasy linia łamana
@@ -21,7 +22,7 @@ class BrokenLine: public Figure
      * @brief Wektor punktow z ktorych ma sie utworzyc ta linia
      */
     std::vector<Vector3D> points;
-
+    friend Drone;
 public:
     
     /**

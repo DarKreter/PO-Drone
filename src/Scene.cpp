@@ -78,6 +78,7 @@ std::shared_ptr<Drone> Scene::operator()(unsigned int n)
     return (drones[n]);
 }
 
+
 /**
  * Dodanie nowego pliku w którym będziemy zapisywać dane obiektu
  *
